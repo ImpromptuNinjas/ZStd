@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="zstdcross.sh" type="BashConfigurationType" factoryName="Bash">
+    <module name="riderModule" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="INTERPRETER_PATH" value="" />
+    <option name="PROJECT_INTERPRETER" value="true" />
+    <option name="WORKING_DIRECTORY" value="C:\Users\theco\Documents\Projects\IN\ZStd\ZStd\runtimes" />
+    <option name="PARENT_ENVS" value="true" />
+    <option name="SCRIPT_NAME" value="C:\Users\theco\Documents\Projects\IN\ZStd\ZStd\runtimes\zstdcross.sh" />
+    <option name="PARAMETERS" value="" />
+    <method v="2" />
+  </configuration>
+</component>

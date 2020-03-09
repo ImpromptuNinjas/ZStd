@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <MSBuildGitHashCommand>git rev-parse HEAD</MSBuildGitHashCommand>
+        <MSBuildGitHashReplaceInfoVersion>True</MSBuildGitHashReplaceInfoVersion>
+        <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)..\</SolutionDir>
+        <PackageOutputPath>$(SolutionDir)</PackageOutputPath>
+        <IncludeSource>False</IncludeSource>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>ImpromptuNinjas.ZStd</PackageId>
+        <Title>ImpromptuNinjas.ZStd</Title>
+        <Version>1.4.4</Version>
+        <Description>A multi-platform .NET Core wrapper of the library build of Facebook's Zstandard project.</Description>
+        <Authors>Tyler Young</Authors>
+        <Copyright>Copyright © 2020 Tyler Young</Copyright>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageOutputDir>..\</PackageOutputDir>
+        <RepositoryUrl>https://github.com/ImpromptuNinjas/ZStd.git</RepositoryUrl>
+        <PackageTags>Zstd;Zstandard;libzstd;compression</PackageTags>
+        <PackageIcon>icon.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="All" />
+        <PackageReference Include="InlineIL.Fody" Version="1.3.5" PrivateAssets="All" />
+        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="runtimes\*\**">
+            <Pack>True</Pack>
+            <PackageCopyToOutput>True</PackageCopyToOutput>
+            <PackagePath>runtimes\</PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>%(Identity)</Link>
+        </Content>
+        <None Include="..\icon.png">
+            <Pack>True</Pack>
+            <PackageCopyToOutput>False</PackageCopyToOutput>
+            <PackagePath />
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="**\*.*.cs">
+            <WouldDependOn>$([System.Text.RegularExpressions.Regex]::Replace('%(Filename)', '^(.*?)\..*$', '$1.cs'))</WouldDependOn>
+            <DependentUpon Condition="'%(DependentUpon)' == '' And '%(WouldDependOn)' != '%(Filename)'">%(WouldDependOn)</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="*.csproj.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../README.md" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../LICENSE" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+</Project>
