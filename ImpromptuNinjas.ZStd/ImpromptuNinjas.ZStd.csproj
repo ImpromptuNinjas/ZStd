@@ -22,6 +22,7 @@
         <RepositoryUrl>https://github.com/ImpromptuNinjas/ZStd.git</RepositoryUrl>
         <PackageTags>Zstd;Zstandard;libzstd;compression</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
+        <NuspecOutputPath>$(SolutionDir)\</NuspecOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -44,6 +45,19 @@
             <Pack>True</Pack>
             <PackageCopyToOutput>False</PackageCopyToOutput>
             <PackagePath />
+            <Link>icon.png</Link>
+        </None>
+        <None Include="..\README.md">
+            <Pack>True</Pack>
+            <PackageCopyToOutput>False</PackageCopyToOutput>
+            <PackagePath />
+            <Link>README.md</Link>
+        </None>
+        <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackageCopyToOutput>False</PackageCopyToOutput>
+            <PackagePath />
+            <Link>LICENSE</Link>
         </None>
     </ItemGroup>
 
@@ -56,14 +70,6 @@
 
     <ItemGroup>
         <None Remove="*.csproj.*" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="../README.md" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="../LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 
 </Project>

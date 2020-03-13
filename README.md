@@ -25,20 +25,22 @@ _Note: In the not too distant future support for 32-bit architectures will likel
 
 ## Features:
 * Compression and decompression
+  - Dictionary support
   - Managed streams into streams of frames
   - Byte arrays and spans into frames
   - Byte arrays and spans into blocks (without frames)
 * Generation of dictionaries from a collection of samples
+* Loading and saving of dictionaries to and from streams, arrays and spans
 * Helpers for collection of dictionary samples and training
 * Training will automatically tune unspecified dictionary parameters
 
-Take at the unit tests to explore its behavior in different situations.
+Take a look at the unit tests to explore its behavior in different situations.
 
 This is in the middle stages of development, and features may be added over time.
 
 ### Known Issues:
 * Currently the native dependencies are shipped with this NuGet package for all platforms.
-  <small>_Separate NuGet runtime packages should be created to provide each specific platform dependency._</small>
+  _Separate NuGet runtime packages should be created to provide each specific platform dependency._
 * Coverage currently stands at 50%. Critical path coverage is high.
   Coverage of non-critical path operations is low.
 * The GC is not yet automatically made aware of unmanaged memory usage.
@@ -75,11 +77,6 @@ var dict = new ZStdDictionaryBuilder(32 * 1024);
 //var dict = new ZStdDictionaryBuilder(someBytes);
 //var dict = new ZStdDictionaryBuilder(someBytes, someSize);
 
-// optionally save the dictionary to a file somehow
-//using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
-//  dict.WriteTo(fs); // preferred
-//  fs.Write(dict); // implicitly casts to ReadOnlySpan<byte>
-//File.WriteAllBytes("saved_dictionary", ((ArraySegment<byte>)dict).ToArray());
 
 // train the dictionary, and retrieve tuned training parameters for future training
 var trainedParams = dict.Train(async () => {
@@ -87,6 +84,12 @@ var trainedParams = dict.Train(async () => {
   // refer to Facebook's Zstd documentation for details on what should be sampled
   yield return ArraySegment<byte>(trainingData, 7, 42);
 }, compressionLevel);
+
+// optionally save the dictionary to a file somehow
+using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
+  dict.WriteTo(fs); // preferred
+//  fs.Write(dict); // implicitly casts to ReadOnlySpan<byte>
+//File.WriteAllBytes("saved_dictionary", ((ArraySegment<byte>)dict).ToArray());
 
 // create an unmanaged reference for use with compression
 using var cDict = dict.CreateCompressorDictionary(compressionLevel);
