@@ -13,7 +13,7 @@
     <PropertyGroup>
         <PackageId>ImpromptuNinjas.ZStd</PackageId>
         <Title>ImpromptuNinjas.ZStd</Title>
-        <Version>1.4.4.1</Version>
+        <Version>1.4.4.2</Version>
         <Description>A multi-platform .NET Core wrapper of the library build of Facebook's Zstandard project.</Description>
         <Authors>Tyler Young</Authors>
         <Copyright>Copyright © 2020 Tyler Young</Copyright>
