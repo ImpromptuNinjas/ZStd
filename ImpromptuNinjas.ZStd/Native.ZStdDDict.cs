@@ -2,11 +2,12 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using InlineIL;
-
+using JetBrains.Annotations;
 namespace ImpromptuNinjas.ZStd {
 
   public static unsafe partial class Native {
 
+    [PublicAPI]
     public static class ZStdDDict {
 
       static ZStdDDict()

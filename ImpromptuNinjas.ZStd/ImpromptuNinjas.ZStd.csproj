@@ -8,7 +8,8 @@
         <PackageOutputPath>$(SolutionDir)</PackageOutputPath>
         <IncludeSource>False</IncludeSource>
         <LangVersion>8</LangVersion>
-        <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFramework Condition="'$(NETCoreAppMaximumVersion)'!='3.1'">netstandard2.0</TargetFramework>
+        <TargetFrameworks Condition="'$(NETCoreAppMaximumVersion)'=='3.1'">netstandard2.0;netcoreapp31</TargetFrameworks>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -27,11 +28,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" PrivateAssets="All" />
+        <!--<PackageReference Include="GitInfo" Version="2.0.26" PrivateAssets="All" />-->
         <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="All" />
         <PackageReference Include="InlineIL.Fody" Version="1.3.5" PrivateAssets="All" />
-        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
         <PackageReference Include="System.Memory" Version="4.5.3" Condition="$(TargetFramework.StartsWith('netstandard'))" />
     </ItemGroup>
 

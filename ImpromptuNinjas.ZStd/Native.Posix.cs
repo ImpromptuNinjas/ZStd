@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-
 namespace ImpromptuNinjas.ZStd {
 
   public static partial class Native {
+
 
     private static bool IsMusl() {
       using (var proc = Process.GetCurrentProcess()) {
@@ -23,6 +23,7 @@ namespace ImpromptuNinjas.ZStd {
 
       return false;
     }
+
 
     private static string GetProcArchString() {
       var cpu = RuntimeInformation.ProcessArchitecture;

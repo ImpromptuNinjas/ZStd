@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp$(NETCoreAppMaximumVersion)</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>8</LangVersion>
+        <RootNamespace>ImpromptuNinjas.ZStd.Tests</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="5.10.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ImpromptuNinjas.ZStd\ImpromptuNinjas.ZStd.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Dockerfile.crosstests">
+            <Link>Dockerfile.crosstests</Link>
+        </None>
+        <None Include="..\crosstests.sh">
+            <Link>crosstests.sh</Link>
+        </None>
+        <None Remove="NetStandard20\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="**\*.*.cs">
+            <WouldDependOn>$([System.Text.RegularExpressions.Regex]::Replace('%(Filename)', '^(.*?)\..*$', '$1.cs'))</WouldDependOn>
+            <DependentUpon Condition="'%(DependentUpon)' == '' And '%(WouldDependOn)' != '%(Filename)'">%(WouldDependOn)</DependentUpon>
+        </Compile>
+        <Compile Remove="NetStandard20\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Remove="NetStandard20\**" />
+    </ItemGroup>
+</Project>

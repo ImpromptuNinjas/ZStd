@@ -1,0 +1,63 @@
+# linux-x64
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS linux-x64-ns20
+COPY / /src
+WORKDIR /src
+
+RUN dotnet build -c Release -f netstandard2.0 ImpromptuNinjas.ZStd
+RUN dotnet run -c Release -p ImpromptuNinjas.ZStd.Tests/NetStandard20 -- --stoponerror
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS linux-x64-nc31
+COPY / /src
+WORKDIR /src
+
+RUN dotnet test -r . -l 'trx;LogFileName=TestResult.xml' -c Release ImpromptuNinjas.ZStd.Tests
+
+# linux-musl-x64
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS linux-musl-x64-ns20
+COPY / /src
+WORKDIR /src
+
+RUN dotnet build -c Release -f netstandard2.0 ImpromptuNinjas.ZStd
+RUN dotnet run -c Release -p ImpromptuNinjas.ZStd.Tests/NetStandard20 -- --stoponerror
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS linux-musl-x64-nc31
+COPY / /src
+WORKDIR /src
+
+RUN dotnet test -r . -l 'trx;LogFileName=TestResult.xml' -c Release ImpromptuNinjas.ZStd.Tests
+
+# linux-x86
+# TODO: no offical SDK images
+
+# linux-arm
+# TODO: fix, workaround, or report problem:
+# "A fatal error occurred, the folder [/usr/share/dotnet/host/fxr] does not contain any version-numbered child folders"
+
+# linux-musl-arm
+#TODO: no official SDK images
+
+# linux-arm64
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster-arm64v8 AS linux-arm64-ns20
+COPY / /src
+WORKDIR /src
+
+RUN dotnet build -c Release -f netstandard2.0 ImpromptuNinjas.ZStd
+RUN dotnet run -c Release -p ImpromptuNinjas.ZStd.Tests/NetStandard20 -- --stoponerror
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster-arm64v8 AS linux-arm64-nc31
+COPY / /src
+WORKDIR /src
+
+RUN dotnet test -r . -l 'trx;LogFileName=TestResult.xml' -c Release ImpromptuNinjas.ZStd.Tests
+
+# linux-musl-arm64
+#TODO: no official SDK images
+
+FROM busybox:musl
+
+COPY --from=linux-x64-nc31 /src/TestResult.xml /src/linux-x64-netcoreapp31/TestResults.xml
+COPY --from=linux-x64-ns20 /src/TestResult.xml /src/linux-x64-netstandard20/TestResults.xml
+COPY --from=linux-musl-x64-nc31 /src/TestResult.xml /src/linux-musl-x64-netcoreapp31/TestResults.xml
+COPY --from=linux-musl-x64-ns20 /src/TestResult.xml /src/linux-musl-x64-netstandard20/TestResults.xml
+COPY --from=linux-arm64-nc31 /src/TestResult.xml /src/linux-arm64-netcoreapp31/TestResults.xml
+COPY --from=linux-arm64-ns20 /src/TestResult.xml /src/linux-arm64-netstandard20/TestResults.xml

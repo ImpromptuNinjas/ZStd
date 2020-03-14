@@ -98,7 +98,7 @@ namespace ImpromptuNinjas.ZStd {
         BaseStream.Flush();
       }
       else {
-        while (_needsFlushing != default) {
+        do {
           _needsFlushing = Compressor.StreamCompress(ref Output, ref Input, EndDirective.Flush);
 
           if (Output.Position == default)
@@ -106,7 +106,7 @@ namespace ImpromptuNinjas.ZStd {
 
           BaseStream.Write(Output.GetUsedSpan());
           Output.Position = default;
-        }
+        } while (_needsFlushing != default);
 
         BaseStream.Flush();
       }
