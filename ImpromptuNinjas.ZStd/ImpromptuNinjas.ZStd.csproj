@@ -1,19 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <MSBuildGitHashCommand>git rev-parse HEAD</MSBuildGitHashCommand>
         <MSBuildGitHashReplaceInfoVersion>True</MSBuildGitHashReplaceInfoVersion>
         <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)..\</SolutionDir>
         <PackageOutputPath>$(SolutionDir)</PackageOutputPath>
         <IncludeSource>False</IncludeSource>
+        <LangVersion>8</LangVersion>
+        <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     </PropertyGroup>
 
     <PropertyGroup>
         <PackageId>ImpromptuNinjas.ZStd</PackageId>
         <Title>ImpromptuNinjas.ZStd</Title>
-        <Version>1.4.4.2</Version>
+        <Version>1.4.4.3</Version>
         <Description>A multi-platform .NET Core wrapper of the library build of Facebook's Zstandard project.</Description>
         <Authors>Tyler Young</Authors>
         <Copyright>Copyright © 2020 Tyler Young</Copyright>
@@ -31,6 +32,7 @@
         <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" PrivateAssets="All" />
         <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="System.Memory" Version="4.5.3" Condition="$(TargetFramework.StartsWith('netstandard'))" />
     </ItemGroup>
 
     <ItemGroup>

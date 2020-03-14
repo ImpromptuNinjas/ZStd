@@ -59,23 +59,10 @@ namespace ImpromptuNinjas.ZStd {
       var sizes = new LinkedList<UIntPtr>();
 
       foreach (var sample in sampler()) {
-        stream.Write(sample);
-        sizes.AddLast((UIntPtr) (sample.Count - sample.Offset));
-      }
+        if (sample.Array == null)
+          continue;
 
-      var sizesArray = new UIntPtr[sizes.Count];
-      sizes.CopyTo(sizesArray, 0);
-
-      return (new ArraySegment<byte>(stream.GetBuffer(), 0, (int) stream.Length), sizesArray);
-    }
-
-    [MustUseReturnValue]
-    private static async Task<(ArraySegment<byte> Samples, UIntPtr[] SamplesSizes)> GatherSamples(AsyncSamplerDelegate sampler) {
-      await using var stream = RecyclableMemoryStreamManager.GetStream("ZStd Dictionary Sampling Buffer");
-      var sizes = new LinkedList<UIntPtr>();
-
-      await foreach (var sample in sampler()) {
-        stream.Write(sample);
+        stream.Write(sample.Array, sample.Offset, sample.Count);
         sizes.AddLast((UIntPtr) (sample.Count - sample.Offset));
       }
 

@@ -8,11 +8,11 @@ namespace ImpromptuNinjas.ZStd {
 
   public static partial class Native {
 
-    private const string LibName = "zstd";
+    private const string LibName = "libzstd";
 
     internal static string LibPath;
 
-    private static readonly unsafe Lazy<IntPtr> _lazyLoadedLib = new Lazy<IntPtr>(() => {
+    private static readonly unsafe Lazy<IntPtr> LazyLoadedLib = new Lazy<IntPtr>(() => {
       var dir = Path.GetDirectoryName(new Uri(typeof(Native).Assembly.CodeBase
           ?? throw new PlatformNotSupportedException()).LocalPath)
         ?? throw new PlatformNotSupportedException();
@@ -23,7 +23,7 @@ namespace ImpromptuNinjas.ZStd {
         LibPath = Path.Combine(dir, "runtimes", ptrBits == 32 ? "win-x86" : "win-x64", "native", "libzstd.dll");
       else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         LibPath = Path.Combine(dir, "runtimes", "osx-x64", "native", "libzstd.dylib");
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         LibPath = Path.Combine(dir, "runtimes", $"{(IsMusl() ? "linux-musl-" : "linux-")}{GetProcArchString()}", "native", "libzstd.so");
       else throw new PlatformNotSupportedException();
 
@@ -35,7 +35,7 @@ namespace ImpromptuNinjas.ZStd {
       return lib;
     }, LazyThreadSafetyMode.ExecutionAndPublication);
 
-    internal static IntPtr Lib => _lazyLoadedLib.Value;
+    public static IntPtr Lib => LazyLoadedLib.Value;
 
     static Native()
       => NativeLibrary.SetDllImportResolver(typeof(Native).Assembly,
@@ -50,6 +50,8 @@ namespace ImpromptuNinjas.ZStd {
 
     internal static void Init()
       => Debug.Assert(Lib != default);
+
+
 
   }
 

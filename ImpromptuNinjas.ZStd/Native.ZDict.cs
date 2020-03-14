@@ -5,7 +5,6 @@ using InlineIL;
 using JetBrains.Annotations;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
-using size_t = System.UIntPtr;
 
 namespace ImpromptuNinjas.ZStd {
 
@@ -39,7 +38,7 @@ namespace ImpromptuNinjas.ZStd {
       static ZDict() => Init();
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      private static size_t Train(byte* dictBuffer, size_t dictBufferCapacity, byte* samplesBuffer, size_t* samplesSizes, uint nbSamples, DictionaryTrainingParameters* parameters) {
+      private static UIntPtr Train(byte* dictBuffer, UIntPtr dictBufferCapacity, byte* samplesBuffer, UIntPtr* samplesSizes, uint nbSamples, DictionaryTrainingParameters* parameters) {
         Push(dictBuffer);
         Push(dictBufferCapacity);
         Push(samplesBuffer);
@@ -48,28 +47,28 @@ namespace ImpromptuNinjas.ZStd {
         Push(parameters);
         Push(ZDICT_optimizeTrainFromBuffer_fastCover);
         Tail();
-        Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(size_t),
-          typeof(byte*), typeof(size_t), typeof(byte*), typeof(size_t), typeof(uint), typeof(DictionaryTrainingParameters*)));
-        return Return<size_t>();
+        Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(UIntPtr),
+          typeof(byte*), typeof(UIntPtr), typeof(byte*), typeof(UIntPtr), typeof(uint), typeof(DictionaryTrainingParameters*)));
+        return Return<UIntPtr>();
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static size_t Train(Span<byte> dictionary, ReadOnlySpan<byte> samples, ReadOnlySpan<size_t> samplesSizes, ref DictionaryTrainingParameters parameters) {
+      public static UIntPtr Train(Span<byte> dictionary, ReadOnlySpan<byte> samples, ReadOnlySpan<UIntPtr> samplesSizes, ref DictionaryTrainingParameters parameters) {
         fixed (byte* pDictBuffer = dictionary)
         fixed (byte* pSamplesBuffer = samples)
-        fixed (size_t* pSamplesSizes = samplesSizes)
+        fixed (UIntPtr* pSamplesSizes = samplesSizes)
         fixed (DictionaryTrainingParameters* pParameters = &parameters)
-          return Train(pDictBuffer, (size_t) dictionary.Length, pSamplesBuffer, pSamplesSizes, (uint) samplesSizes.Length, pParameters);
+          return Train(pDictBuffer, (UIntPtr) dictionary.Length, pSamplesBuffer, pSamplesSizes, (uint) samplesSizes.Length, pParameters);
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      private static uint GetId(byte* dictBuffer, size_t dictSize) {
+      private static uint GetId(byte* dictBuffer, UIntPtr dictSize) {
         Push(dictBuffer);
         Push(dictSize);
         Push(ZDICT_getDictID);
         Tail();
         Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(uint),
-          typeof(byte*), typeof(size_t)));
+          typeof(byte*), typeof(UIntPtr)));
         return Return<uint>();
       }
 
@@ -81,45 +80,45 @@ namespace ImpromptuNinjas.ZStd {
 
       /*
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      private static size_t GetHeaderSize(byte* dictBuffer, size_t dictSize) {
+      private static UIntPtr GetHeaderSize(byte* dictBuffer, UIntPtr dictSize) {
         Push(dictBuffer);
         Push(dictSize);
         Push(ZDICT_getDictHeaderSize);
         Tail();
-        Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(size_t),
-          typeof(byte*), typeof(size_t)));
-        return Return<size_t>();
+        Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(UIntPtr),
+          typeof(byte*), typeof(UIntPtr)));
+        return Return<UIntPtr>();
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static size_t GetHeaderSize(ReadOnlySpan<byte> dictBuffer) {
+      public static UIntPtr GetHeaderSize(ReadOnlySpan<byte> dictBuffer) {
         fixed (byte* pDictBuffer = dictBuffer)
           return GetHeaderSize(pDictBuffer, (UIntPtr) dictBuffer.Length);
       }
       */
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static uint IsError(size_t code) {
+      public static uint IsError(UIntPtr code) {
         Push(code);
         Push(ZDICT_isError);
         Tail();
         Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(uint),
-          typeof(size_t)));
+          typeof(UIntPtr)));
         return Return<uint>();
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      internal static sbyte* GetErrorNameInternal(size_t code) {
+      internal static sbyte* GetErrorNameInternal(UIntPtr code) {
         Push(code);
         Push(ZDICT_getErrorName);
         Tail();
         Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(sbyte*),
-          typeof(size_t)));
+          typeof(UIntPtr)));
         return ReturnPointer<sbyte>();
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static string GetErrorName(size_t code)
+      public static string GetErrorName(UIntPtr code)
         => new string(GetErrorNameInternal(code));
 
     }

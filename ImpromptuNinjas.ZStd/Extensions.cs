@@ -1,4 +1,6 @@
 using System;
+using System.Buffers;
+using System.IO;
 using JetBrains.Annotations;
 
 namespace ImpromptuNinjas.ZStd {
@@ -39,15 +41,44 @@ namespace ImpromptuNinjas.ZStd {
 
     internal static bool LessThanOrEqualTo(this UIntPtr a, UIntPtr b)
       => a.CompareTo(b) <= 0;
+
     internal static unsafe bool EqualTo(this UIntPtr a, int b)
       => sizeof(UIntPtr) == 8
-        ? checked((long)a.ToUInt64()) == b
+        ? checked((long) a.ToUInt64()) == b
         : a.ToUInt32() == b;
 
     internal static unsafe bool EqualTo(this UIntPtr a, long b)
       => sizeof(UIntPtr) == 8
-        ? checked((long)a.ToUInt64()) == b
+        ? checked((long) a.ToUInt64()) == b
         : a.ToUInt32() == b;
+
+#if NETSTANDARD
+    internal static void Write(this Stream stream, ReadOnlySpan<byte> bytes) {
+      var count = bytes.Length;
+      var copy = ArrayPool<byte>.Shared.Rent(count);
+      try {
+        bytes.CopyTo(copy);
+        stream.Write(copy, 0, count);
+      }
+      finally {
+        ArrayPool<byte>.Shared.Return(copy);
+      }
+    }
+
+    internal static int Read(this Stream stream, Span<byte> bytes) {
+      var count = bytes.Length;
+      var copy = ArrayPool<byte>.Shared.Rent(count);
+      try {
+        var read = stream.Read(copy, 0, count);
+        copy.CopyTo(bytes);
+
+        return read;
+      }
+      finally {
+        ArrayPool<byte>.Shared.Return(copy);
+      }
+    }
+#endif
 
   }
 

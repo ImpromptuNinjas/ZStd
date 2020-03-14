@@ -16,28 +16,6 @@ namespace ImpromptuNinjas.ZStd.Utilities {
       return *(_pointer + _offset++);
     }
 
-    public override unsafe int Read(Span<byte> buffer) {
-      ValidateDisposed();
-      ValidateSpan(buffer, nameof(buffer));
-      var count = buffer.Length;
-      if (count == 0)
-        return 0;
-
-      var maxCount = _length - _offset;
-
-      if (maxCount == 0)
-        return 0;
-
-      var read = Math.Min(count, maxCount);
-
-      fixed (byte* pBuf = buffer)
-        Unsafe.CopyBlock(pBuf, _pointer + _offset, (uint) read);
-
-      _offset += read;
-
-      return read;
-    }
-
     public override unsafe int Read(byte[] buffer, int offset, int count) {
       ValidateDisposed();
       ValidateReadWriteArgs(buffer, offset, count);
