@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="zstdcross.sh" type="BashConfigurationType" factoryName="Bash">
+  <configuration default="false" name="crosstests.sh" type="BashConfigurationType" factoryName="Bash">
     <module name="riderModule" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="INTERPRETER_PATH" value="" />
     <option name="PROJECT_INTERPRETER" value="true" />
-    <option name="WORKING_DIRECTORY" value="ImpromptuNinjas.ZStd\runtimes" />
+    <option name="WORKING_DIRECTORY" value="" />
     <option name="PARENT_ENVS" value="true" />
-    <option name="SCRIPT_NAME" value="ImpromptuNinjas.ZStd\runtimes\zstdcross.sh" />
+    <option name="SCRIPT_NAME" value="crosstests.sh" />
     <option name="PARAMETERS" value="" />
     <method v="2" />
   </configuration>
