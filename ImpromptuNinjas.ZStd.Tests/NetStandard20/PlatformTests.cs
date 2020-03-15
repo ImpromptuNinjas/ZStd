@@ -23,6 +23,7 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
       tf?.FrameworkName.Should().Be(".NETStandard,Version=v2.0");
 
+      Console.WriteLine(tf?.FrameworkName);
     }
 
   }

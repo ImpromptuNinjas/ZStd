@@ -1,3 +1,4 @@
+#if NUNITLITE
 using System;
 using System.Diagnostics;
 using NUnitLite;
@@ -39,3 +40,4 @@ internal static class EntryPoint {
   }
 
 }
+#endif

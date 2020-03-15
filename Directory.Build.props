@@ -1,0 +1,21 @@
+<Project>
+    <Target Name="UpdatePackageCacheForDependencies" BeforeTargets="Restore" Condition="@(NuPkgRef->Count())!=0">
+        <ItemGroup>
+            <NuPkgRef Update="**">
+                <Id>$([System.Text.RegularExpressions.Regex]::Replace('%(NuPkgRef.Filename)', '^(.*?)\.(?:\.?[0-9]+){3,}(?:[-a-z]+)?$', '$1'))</Id>
+                <Version>$([System.Text.RegularExpressions.Regex]::Replace('%(NuPkgRef.Filename)', '^.*?\.((?:\.?[0-9]+){3,}(?:[-a-z]+)?)$', '$1'))</Version>
+            </NuPkgRef>
+            <NuPkgRef Update="**">
+                <LowerCaseId>$([System.String]::Copy('%(NuPkgRef.Id)').ToLowerInvariant())</LowerCaseId>
+            </NuPkgRef>
+        </ItemGroup>
+        
+        <Message Importance="high" Text="Updating package cache..."/>
+        <Message Importance="high" Text="%(NuPkgRef.Id) %(NuPkgRef.Version)"/>
+        <RemoveDir Directories="$(NuGetPackageRoot)\%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"/>
+        <Unzip
+            SourceFiles="%(NuPkgRef.Identity)"
+            DestinationFolder="$(NuGetPackageRoot)\%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"
+        />
+    </Target>
+</Project>

@@ -1,16 +1,25 @@
 using System;
 using System.IO;
+using FluentAssertions;
+#if MSTEST
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using NUnit.Framework;
+#endif
 
 namespace ImpromptuNinjas.ZStd.Tests {
 
   public partial class StreamTests {
 
+#if MSTEST
+    [TestMethod,UseParameterValues]
+#else
     [Test]
+#endif
     public void StreamRoundTrip(
       [ValueSource(typeof(Utilities), nameof(Utilities.CompressionLevels))]
       int compressionLevel,
-      [Values(false, true)] bool forceFlush,
+      [Values(0, 1, 2)] int flushMode,
       [Values(false, true)] bool useDictionary
     ) {
       var dict = useDictionary
@@ -25,16 +34,16 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
       // compression
 
+      using (var cDict = dict?.CreateCompressorDictionary(compressionLevel))
       using (var compressStream = new ZStdCompressStream(compressed)) {
-        using var cDict = dict?.CreateCompressorDictionary(compressionLevel);
-
         compressStream.Compressor.UseDictionary(cDict);
 
         compressStream.Compressor.Set(CompressionParameter.CompressionLevel, compressionLevel);
 
-        compressStream.Write(sample);
+        compressStream.Write(sample, 0, sample.Length);
 
-        compressStream.Flush(forceFlush);
+        if (flushMode != 0)
+          compressStream.Flush(flushMode == 2);
       }
 
       Console.WriteLine($"Compressed to: {compressed.Length} ({(double) compressed.Length / (double) sample.Length:P})");
@@ -43,9 +52,8 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
       compressed.Position = 0;
 
-      using var decompressStream = new ZStdDecompressStream(compressed);
-
       using var dDict = dict?.CreateDecompressorDictionary();
+      using var decompressStream = new ZStdDecompressStream(compressed);
 
       decompressStream.Decompressor.UseDictionary(dDict);
 
@@ -53,9 +61,9 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
       decompressStream.Read(decompressed, 0, decompressed.Length);
 
-      Assert.AreEqual(-1, decompressStream.ReadByte());
+      decompressStream.ReadByte().Should().Be(-1);
 
-      CollectionAssert.AreEqual(sample, decompressed);
+      decompressed.Should().Equal(sample);
     }
 
   }

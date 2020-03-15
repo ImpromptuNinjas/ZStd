@@ -23,6 +23,7 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
       tf?.FrameworkName.Should().Be(".NETCoreApp,Version=v3.1");
 
+      Console.WriteLine(tf?.FrameworkName);
     }
 
   }

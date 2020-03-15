@@ -28,13 +28,9 @@ namespace ImpromptuNinjas.ZStd {
 
     public unsafe Span<byte> GetRemainingSpan()
       => sizeof(void*) == 8
-        ? new Span<byte>(_pinnedPointer + Position.ToUInt64(), (int) Size)
-        : new Span<byte>(_pinnedPointer + Position.ToUInt32(), (int) Size);
+        ? new Span<byte>(_pinnedPointer + Position.ToUInt64(), (int) (Size.ToUInt64() - Position.ToUInt64()))
+        : new Span<byte>(_pinnedPointer + Position.ToUInt32(), (int) (Size.ToUInt32() - Position.ToUInt32()));
 
-    public unsafe Span<byte> GetUsableSpan()
-      => sizeof(void*) == 8
-        ? new Span<byte>(_pinnedPointer, (int) (Size.ToUInt64() - Position.ToUInt64()))
-        : new Span<byte>(_pinnedPointer, (int) (Size.ToUInt32() - Position.ToUInt32()));
     public unsafe Span<byte> GetUsedSpan()
       => sizeof(void*) == 8
         ? new Span<byte>(_pinnedPointer, (int) (Position.ToUInt64()))

@@ -2,9 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd", "ImpromptuNinjas.ZStd\ImpromptuNinjas.ZStd.csproj", "{99DFD50B-0416-472D-B962-23928070A843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests", "ImpromptuNinjas.ZStd.Tests\ImpromptuNinjas.ZStd.Tests.csproj", "{E418C566-ADCF-47D6-AA82-D624DE097F42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests.NetCore31", "ImpromptuNinjas.ZStd.Tests\ImpromptuNinjas.ZStd.Tests.NetCore31.csproj", "{E418C566-ADCF-47D6-AA82-D624DE097F42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Depender", "ImpromptuNinjas.ZStd.Depender\ImpromptuNinjas.ZStd.Depender.csproj", "{A4253D0D-D8AE-420F-AC41-AFE6C416A187}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests.NetStandard20", "ImpromptuNinjas.ZStd.Tests\NetStandard20\ImpromptuNinjas.ZStd.Tests.NetStandard20.csproj", "{811F8DC9-E428-463B-B8B2-EFFBCEB98465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +20,9 @@ Global
 		{E418C566-ADCF-47D6-AA82-D624DE097F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E418C566-ADCF-47D6-AA82-D624DE097F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E418C566-ADCF-47D6-AA82-D624DE097F42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4253D0D-D8AE-420F-AC41-AFE6C416A187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4253D0D-D8AE-420F-AC41-AFE6C416A187}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4253D0D-D8AE-420F-AC41-AFE6C416A187}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4253D0D-D8AE-420F-AC41-AFE6C416A187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

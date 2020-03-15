@@ -1,12 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using FluentAssertions;
+#if MSTEST
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using NUnit.Framework;
+#endif
 
 namespace ImpromptuNinjas.ZStd.Tests {
 
   public partial class BindingTests {
 
+#if MSTEST
+    [TestMethod,UseParameterValues]
+#else
     [Test]
+#endif
     public void StreamRoundTrip(
       [ValueSource(typeof(Utilities), nameof(Utilities.CompressionLevels))]
       int compressionLevel,
@@ -41,11 +52,11 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
         var amountRemaining = cCtx.StreamCompress(ref outBuf, ref inBuf, EndDirective.End);
 
-        Assert.Zero(amountRemaining.ToUInt64());
+        amountRemaining.ToUInt64().Should().Be(0);
 
-        Assert.NotZero(outBuf.Offset);
-        Assert.NotZero(inBuf.Offset);
-        Assert.AreEqual(sample.Length, inBuf.Offset);
+        outBuf.Offset.Should().NotBe(0);
+        inBuf.Offset.Should().NotBe(0);
+        inBuf.Offset.Should().Be(sample.Length);
 
         compressedSize = (UIntPtr) outBuf.Offset;
       }
@@ -71,14 +82,14 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
         var amountRemaining = dCtx.StreamDecompress(ref outBuf, ref inBuf);
 
-        Assert.Zero(amountRemaining.ToUInt64());
-        Assert.Zero(outBuf.Count);
-        Assert.Zero(inBuf.Count);
-        Assert.NotZero(outBuf.Offset);
-        Assert.NotZero(inBuf.Offset);
-        Assert.AreEqual(sample.Length, outBuf.Offset);
+        amountRemaining.ToUInt64().Should().Be(0);
+        outBuf.Count.Should().Be(0);
+        inBuf.Count.Should().Be(0);
+        outBuf.Offset.Should().NotBe(0);
+        inBuf.Offset.Should().NotBe(0);
+        outBuf.Offset.Should().Be(sample.Length);
 
-        CollectionAssert.AreEqual(sample, decompressBuffer.Take(outBuf.Offset));
+        decompressBuffer.Take(outBuf.Offset).Should().Equal(sample);
       }
     }
 

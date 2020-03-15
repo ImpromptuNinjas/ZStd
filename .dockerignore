@@ -5,3 +5,4 @@ Dockerfile.*
 **/bin/**
 **/obj/**
 TestResult.*
+TestResults

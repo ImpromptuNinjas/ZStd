@@ -8,8 +8,8 @@
         <PackageOutputPath>$(SolutionDir)</PackageOutputPath>
         <IncludeSource>False</IncludeSource>
         <LangVersion>8</LangVersion>
-        <TargetFramework Condition="'$(NETCoreAppMaximumVersion)'!='3.1'">netstandard2.0</TargetFramework>
-        <TargetFrameworks Condition="'$(NETCoreAppMaximumVersion)'=='3.1'">netstandard2.0;netcoreapp31</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;netcoreapp31</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -24,7 +24,6 @@
         <RepositoryUrl>https://github.com/ImpromptuNinjas/ZStd.git</RepositoryUrl>
         <PackageTags>Zstd Zstandard libzstd compression</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
-        <NuspecOutputPath>$(SolutionDir)\</NuspecOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -75,5 +74,4 @@
     <ItemGroup>
         <None Remove="*.csproj.*" />
     </ItemGroup>
-
 </Project>

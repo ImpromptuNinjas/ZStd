@@ -32,4 +32,5 @@ obj/
 *.nupkg
 *.dll
 !/ImpromptuNinjas.ZStd/runtimes/**/*.dll
-/*.nuspec
+TestResult.*
+TestResults
