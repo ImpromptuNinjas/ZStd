@@ -25,10 +25,12 @@ obj/
 .idea/modules.xml
 .idea/replstate.xml
 .idea_modules/
+.vs
 *.iws
 *.iml
 *.ipr
 *.user
+*.suo
 *.nupkg
 *.dll
 !/ImpromptuNinjas.ZStd/runtimes/**/*.dll
