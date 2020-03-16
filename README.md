@@ -1,6 +1,6 @@
 
-![ZStd for .NET Core](https://media.githubusercontent.com/media/ImpromptuNinjas/ZStd/master/icon.png)
-ZStd for .NET Core
+![ZStd for .NET](https://media.githubusercontent.com/media/ImpromptuNinjas/ZStd/master/icon.png)
+ZStd for .NET
 ==================
 [![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/)
 
