@@ -13,9 +13,7 @@ namespace ImpromptuNinjas.ZStd {
     internal static string LibPath;
 
     private static readonly unsafe Lazy<IntPtr> LazyLoadedLib = new Lazy<IntPtr>(() => {
-      var dir = Path.GetDirectoryName(new Uri(typeof(Native).Assembly.CodeBase
-          ?? throw new PlatformNotSupportedException()).LocalPath)
-        ?? throw new PlatformNotSupportedException();
+      var dir = typeof(Native).GetAssembly().GetLocalCodeBaseDirectory();
 
       var ptrBits = sizeof(void*) * 8;
 
@@ -38,7 +36,7 @@ namespace ImpromptuNinjas.ZStd {
     public static IntPtr Lib => LazyLoadedLib.Value;
 
     static Native()
-      => NativeLibrary.SetDllImportResolver(typeof(Native).Assembly,
+      => NativeLibrary.SetDllImportResolver(typeof(Native).GetAssembly(),
         (name, assembly, path)
           => {
           if (name != LibName)

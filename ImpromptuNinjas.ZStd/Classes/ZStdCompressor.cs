@@ -5,7 +5,12 @@ using static ImpromptuNinjas.ZStd.Native.ZStdCCtx;
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
-  public class ZStdCompressor : IDisposable, ICloneable {
+  public class ZStdCompressor
+    : IDisposable
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
+      , ICloneable
+#endif
+  {
 
     public unsafe CCtx* Context;
 
@@ -19,10 +24,12 @@ namespace ImpromptuNinjas.ZStd {
       => Context->Free();
 
     private static int? _lazyMaximumCompressionLevel;
+
     public static int MaximumCompressionLevel
       => _lazyMaximumCompressionLevel ??= Native.ZStd.GetMaxCompressionLevel();
 
     private static int? _lazyMinimumCompressionLevel;
+
     public static int MinimumCompressionLevel
       => _lazyMinimumCompressionLevel ??= Native.ZStd.GetMinCompressionLevel();
 
@@ -32,8 +39,10 @@ namespace ImpromptuNinjas.ZStd {
     public unsafe ZStdCompressor Clone(ulong pledgedSrcSize = ulong.MaxValue)
       => new ZStdCompressor(Copy(Context, pledgedSrcSize));
 
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
     object ICloneable.Clone()
       => Clone();
+#endif
 
     public unsafe void Free()
       => FreeCCtx(Context);
@@ -53,7 +62,7 @@ namespace ImpromptuNinjas.ZStd {
       => SetParameter(Context, parameter, value).EnsureZStdSuccess();
 
     public unsafe void UseDictionary([CanBeNull] ZStdCompressorDictionary dict)
-      =>  ReferenceDictionary(Context, dict != null ? dict.Reference : null).EnsureZStdSuccess();
+      => ReferenceDictionary(Context, dict != null ? dict.Reference : null).EnsureZStdSuccess();
 
     public unsafe void ResetDictionary()
       => Native.ZStdCCtx.ResetDictionary(Context).EnsureZStdSuccess();

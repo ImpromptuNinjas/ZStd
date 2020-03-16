@@ -4,7 +4,7 @@ ZStd for .NET Core
 ==================
 [![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/)
 
-**ZStd** is a multi-platform .NET Core wrapper of the library build of Facebook's Zstandard project.
+**ZStd** is a multi-platform .NET wrapper of the library build of Facebook's Zstandard project.
 
 ## Supported platforms:
 * Windows

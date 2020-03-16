@@ -1,12 +1,16 @@
 using System;
+using JetBrains.Annotations;
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
 using System.Runtime.Serialization;
 using System.Security.Permissions;
-using JetBrains.Annotations;
+#endif
 
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
   [Serializable]
+#endif
   public class ZStdException : Exception {
 
     public uint Code { get; }
@@ -18,6 +22,7 @@ namespace ImpromptuNinjas.ZStd {
       : base(message)
       => Code = code;
 
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
     protected ZStdException(SerializationInfo info, StreamingContext context)
       : base(info, context)
       => Code = info.GetUInt32(nameof(Code));
@@ -31,6 +36,7 @@ namespace ImpromptuNinjas.ZStd {
 
       base.GetObjectData(info, context);
     }
+#endif
 
   }
 

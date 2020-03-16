@@ -22,34 +22,20 @@
             <GeneratePathProperty>true</GeneratePathProperty>
         </PackageReference>
         <Reference Include="ImpromptuNinjas.ZStd.dll">
-            <HintPath>$(PkgImpromptuNinjas_ZStd)\lib\$(TargetFramework)\ImpromptuNinjas.ZStd.dll</HintPath>
+            <HintPath>$(PkgImpromptuNinjas_ZStd)\lib\netstandard1.1\ImpromptuNinjas.ZStd.dll</HintPath>
         </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="..\Dockerfile.crosstests">
-            <Link>Dockerfile.crosstests</Link>
-        </None>
-        <None Include="..\crosstests.sh">
-            <Link>crosstests.sh</Link>
-        </None>
-        <None Include="..\nuget.config">
-            <Link>nuget.config</Link>
-        </None>
-        <None Remove="NetStandard*\**"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="**\*.*.cs">
-            <WouldDependOn>$([System.Text.RegularExpressions.Regex]::Replace('%(Filename)', '^(.*?)\..*$', '$1.cs'))</WouldDependOn>
-            <DependentUpon Condition="'%(DependentUpon)' == '' And '%(WouldDependOn)' != '%(Filename)'">%(WouldDependOn)</DependentUpon>
-        </Compile>
-        <Compile Remove="NetStandard*\**"/>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Remove="NetStandard*\**"/>
     </ItemGroup>
     <ItemGroup>
         <NuPkgRef Include="..\*.nupkg">
             <Visible>False</Visible>
         </NuPkgRef>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\*.cs">
+            <Visible>False</Visible>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="TestResult.*"/>
     </ItemGroup>
 </Project>

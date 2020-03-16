@@ -6,7 +6,11 @@ using static ImpromptuNinjas.ZStd.Native.ZStdDCtx;
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
-  public class ZStdDecompressor : IDisposable, ICloneable {
+  public class ZStdDecompressor : IDisposable
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
+      , ICloneable
+#endif
+  {
 
     public unsafe DCtx* Context;
 
@@ -28,8 +32,10 @@ namespace ImpromptuNinjas.ZStd {
     public unsafe ZStdDecompressor Clone()
       => new ZStdDecompressor(Copy(Context));
 
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
     object ICloneable.Clone()
       => Clone();
+#endif
 
     public unsafe void Free()
       => FreeDCtx(Context);

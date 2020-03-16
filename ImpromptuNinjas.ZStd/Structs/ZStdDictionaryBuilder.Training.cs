@@ -14,7 +14,7 @@ namespace ImpromptuNinjas.ZStd {
     }
 
     public void Train(SamplerDelegate sampler, ref DictionaryTrainingParameters parameters, int compressionLevel = default, uint nbThreads = 1, uint tuningSteps = 0) {
-      var (samplesBuffer, samplesSizes) = GatherSamples(sampler);
+      var samplesBuffer = GatherSamples(sampler, out var samplesSizes);
 
       Size = Native.ZDict.Train(
           Data,

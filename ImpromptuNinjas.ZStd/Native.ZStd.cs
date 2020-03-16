@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using InlineIL;
 using JetBrains.Annotations;
 using static InlineIL.IL;
@@ -121,9 +122,42 @@ namespace ImpromptuNinjas.ZStd {
         return ReturnPointer<sbyte>();
       }
 
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static string GetErrorName(UIntPtr code)
         => new string(GetErrorNameInternal(code));
+#elif !NETSTANDARD1_1
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static string GetErrorName(UIntPtr code) {
+        var bytes = GetErrorNameInternal(code);
+        int l;
+        for (l = 0; l < 32768; ++l) {
+          if (bytes[l] == 0)
+            break;
+        }
+
+        return l > 0 && l < 32768 ? Encoding.UTF8.GetString((byte*) bytes, l) : "Unknown";
+      }
+#else
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static string GetErrorName(UIntPtr code) {
+        var bytes = GetErrorNameInternal(code);
+        int l;
+        for (l = 0; l < 32768; ++l) {
+          if (bytes[l] == 0)
+            break;
+        }
+
+        if (l < 0 || l > 32768)
+          return "Unknown";
+
+        var byteArray = new byte[l];
+        fixed (byte* pByteArray = byteArray)
+          Unsafe.CopyBlock(pByteArray, (byte*) bytes, (uint) l);
+
+        return Encoding.UTF8.GetString(byteArray, 0, l);
+      }
+#endif
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       private static UIntPtr GetFrameContentSize(byte* src, UIntPtr srcSize) {
@@ -189,8 +223,41 @@ namespace ImpromptuNinjas.ZStd {
         return ReturnPointer<sbyte>();
       }
 
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1
       public static string GetVersionString()
         => new string(GetVersionStringInternal());
+#elif !NETSTANDARD1_1
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static string GetVersionString() {
+        var bytes = GetVersionStringInternal();
+        int l;
+        for (l = 0; l < 32768; ++l) {
+          if (bytes[l] == 0)
+            break;
+        }
+
+        return l > 0 && l < 32768 ? Encoding.UTF8.GetString((byte*) bytes, l) : "Unknown";
+      }
+#else
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static string GetVersionString() {
+        var bytes = GetVersionStringInternal();
+        int l;
+        for (l = 0; l < 32768; ++l) {
+          if (bytes[l] == 0)
+            break;
+        }
+
+        if (l < 0 || l > 32768)
+          return "Unknown";
+
+        var byteArray = new byte[l];
+        fixed (byte* pByteArray = byteArray)
+          Unsafe.CopyBlock(pByteArray, (byte*) bytes, (uint) l);
+
+        return Encoding.UTF8.GetString(byteArray, 0, l);
+      }
+#endif
 
     }
 

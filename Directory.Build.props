@@ -1,4 +1,8 @@
 <Project>
+    <PropertyGroup>
+        <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
+        <Version>1.4.4.4</Version>
+    </PropertyGroup>
     <Target Name="UpdatePackageCacheForDependencies" BeforeTargets="Restore" Condition="@(NuPkgRef->Count())!=0">
         <ItemGroup>
             <NuPkgRef Update="**">
@@ -9,7 +13,7 @@
                 <LowerCaseId>$([System.String]::Copy('%(NuPkgRef.Id)').ToLowerInvariant())</LowerCaseId>
             </NuPkgRef>
         </ItemGroup>
-        
+
         <Message Importance="high" Text="Updating package cache..."/>
         <Message Importance="high" Text="%(NuPkgRef.Id) %(NuPkgRef.Version)"/>
         <RemoveDir Directories="$(NuGetPackageRoot)\%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"/>

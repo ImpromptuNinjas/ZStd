@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests.NetStandard20", "ImpromptuNinjas.ZStd.Tests\NetStandard20\ImpromptuNinjas.ZStd.Tests.NetStandard20.csproj", "{811F8DC9-E428-463B-B8B2-EFFBCEB98465}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InlineIL", "InlineIL\InlineIL.csproj", "{C8D83418-3C54-4779-BA74-8D6626CA30A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests.NetStandard11", "ImpromptuNinjas.ZStd.Tests\NetStandard11\ImpromptuNinjas.ZStd.Tests.NetStandard11.csproj", "{705B30BF-C201-486E-8CCE-3BC59D9C3EB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpromptuNinjas.ZStd.Tests.NetStandard14", "ImpromptuNinjas.ZStd.Tests\NetStandard14\ImpromptuNinjas.ZStd.Tests.NetStandard14.csproj", "{3D2284D2-23EA-4721-8305-D2D426498EED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{811F8DC9-E428-463B-B8B2-EFFBCEB98465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8D83418-3C54-4779-BA74-8D6626CA30A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8D83418-3C54-4779-BA74-8D6626CA30A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8D83418-3C54-4779-BA74-8D6626CA30A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8D83418-3C54-4779-BA74-8D6626CA30A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{705B30BF-C201-486E-8CCE-3BC59D9C3EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705B30BF-C201-486E-8CCE-3BC59D9C3EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705B30BF-C201-486E-8CCE-3BC59D9C3EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705B30BF-C201-486E-8CCE-3BC59D9C3EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D2284D2-23EA-4721-8305-D2D426498EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D2284D2-23EA-4721-8305-D2D426498EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D2284D2-23EA-4721-8305-D2D426498EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D2284D2-23EA-4721-8305-D2D426498EED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
