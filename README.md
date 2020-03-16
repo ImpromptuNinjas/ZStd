@@ -86,7 +86,7 @@ var trainedParams = dict.Train(async () => {
 }, compressionLevel);
 
 // optionally save the dictionary to a file somehow
-using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
+using (var fs = File.Create(path))
   dict.WriteTo(fs); // preferred
 //  fs.Write(dict); // implicitly casts to ReadOnlySpan<byte>
 //File.WriteAllBytes("saved_dictionary", ((ArraySegment<byte>)dict).ToArray());
