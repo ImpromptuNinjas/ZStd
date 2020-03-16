@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -8,6 +9,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using NUnit.Framework;
+
 #endif
 
 namespace ImpromptuNinjas.ZStd.Tests {
@@ -28,6 +30,26 @@ namespace ImpromptuNinjas.ZStd.Tests {
       var zstdAsm = typeof(ZStdException).Assembly;
 
       var tf = zstdAsm.GetCustomAttribute<TargetFrameworkAttribute>();
+
+      string commit = null;
+      using (var proc = Process.Start(new ProcessStartInfo("git","rev-parse HEAD") {
+        RedirectStandardOutput = true
+      })) {
+        proc?.Start();
+        commit = proc?.StandardOutput.ReadToEnd()?.Trim();
+      }
+
+      commit.Should().NotBeNullOrEmpty();
+
+      Console.WriteLine($"Current commit according to git: {commit}");
+
+      var version = zstdAsm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+
+      version.Should().NotBeNullOrEmpty();
+
+      (version?.Split('+', 2)[1]).Should().Be(commit);
+
+      Console.WriteLine($"Assembly Informational Version: {version}");
 
       Console.WriteLine($"Assembly Framework: {tf?.FrameworkName}");
 
