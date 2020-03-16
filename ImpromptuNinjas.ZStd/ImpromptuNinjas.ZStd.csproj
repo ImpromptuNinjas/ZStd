@@ -17,7 +17,7 @@
         <Authors>Tyler Young</Authors>
         <Copyright>Copyright © 2020 Tyler Young</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageOutputDir>..\</PackageOutputDir>
+        <PackageOutputDir>$(SolutionDir)</PackageOutputDir>
         <RepositoryUrl>https://github.com/ImpromptuNinjas/ZStd.git</RepositoryUrl>
         <PackageTags>Zstd Zstandard libzstd compression</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
@@ -111,6 +111,18 @@
         </Compile>
         <Compile Update="Utilities\NativeLibrary.cs">
           <WouldDependOn>NativeLibrary</WouldDependOn>
+        </Compile>
+        <Compile Update="Delegates\AsyncSamplerDelegate.cs">
+          <WouldDependOn>AsyncSamplerDelegate</WouldDependOn>
+        </Compile>
+        <Compile Update="Delegates\SamplerDelegate.cs">
+          <WouldDependOn>SamplerDelegate</WouldDependOn>
+        </Compile>
+        <Compile Update="Structs\DictionaryTrainingParameters.cs">
+          <WouldDependOn>DictionaryTrainingParameters</WouldDependOn>
+        </Compile>
+        <Compile Update="Structs\DictionaryParameters.cs">
+          <WouldDependOn>DictionaryParameters</WouldDependOn>
         </Compile>
     </ItemGroup>
 

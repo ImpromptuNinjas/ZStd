@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
-        <Version>1.4.4.4</Version>
+        <Version>1.4.4.5</Version>
     </PropertyGroup>
     <Target Name="UpdatePackageCacheForDependencies" BeforeTargets="Restore" Condition="@(NuPkgRef->Count())!=0">
         <ItemGroup>
