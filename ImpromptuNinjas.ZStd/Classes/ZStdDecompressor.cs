@@ -6,9 +6,11 @@ using static ImpromptuNinjas.ZStd.Native.ZStdDCtx;
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
-  public class ZStdDecompressor : IDisposable
+  public class ZStdDecompressor
+    : IDisposable
 #if !NETSTANDARD1_4 && !NETSTANDARD1_1
-      , ICloneable
+      ,
+      ICloneable
 #endif
   {
 
@@ -38,38 +40,36 @@ namespace ImpromptuNinjas.ZStd {
 #endif
 
     public unsafe void Free()
-      => FreeDCtx(Context);
+      => Context->Free();
 
     public unsafe UIntPtr GetSize()
-      => SizeOfDCtx(Context).EnsureZStdSuccess();
+      => Context->GetSize();
 
     public unsafe void Reset(ResetDirective directive)
-      => ResetDCtx(Context, directive).EnsureZStdSuccess();
+      => Context->Reset(directive);
 
     /*
-    public unsafe int Get(DecompressionParameter parameter) {
-      GetParameter(Context, parameter, out var value).EnsureZStdSuccess();
-      return value;
-    }
+    public unsafe int Get(DecompressionParameter parameter)
+      => Context->Get(parameter, out var value);
     */
 
     public unsafe void Set(DecompressionParameter parameter, int value)
-      => SetParameter(Context, parameter, value).EnsureZStdSuccess();
+      => Context->Set(parameter, value);
 
     public unsafe void UseDictionary([CanBeNull] ZStdDecompressorDictionary dict)
-      => ReferenceDictionary(Context, dict != null ? dict.Reference : null).EnsureZStdSuccess();
+      => Context->UseDictionary(dict != null ? dict.Reference : null);
 
     public unsafe void ResetDictionary()
-      => Native.ZStdDCtx.ResetDictionary(Context).EnsureZStdSuccess();
+      => Context->ResetDictionary();
 
     public unsafe UIntPtr Decompress(Span<byte> output, ReadOnlySpan<byte> input)
-      => Native.ZStdDCtx.Decompress(Context, output, input).EnsureZStdSuccess();
+      => Context->DecompressFrame(output, input);
 
     public unsafe UIntPtr StreamDecompress(ref ArraySegment<byte> output, ref ArraySegment<byte> input)
-      => Native.ZStdDCtx.StreamDecompress(Context, ref output, ref input).EnsureZStdSuccess();
+      => Context->StreamDecompress(ref output, ref input);
 
     public unsafe UIntPtr StreamDecompress(ref Buffer output, ref Buffer input)
-      => Native.ZStdDCtx.StreamDecompress(Context, ref output, ref input).EnsureZStdSuccess();
+      => Context->StreamDecompress(ref output, ref input);
 
   }
 

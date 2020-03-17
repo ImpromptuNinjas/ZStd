@@ -22,9 +22,12 @@ namespace ImpromptuNinjas.ZStd.Tests {
       int compressionLevel,
       [Values(false, true)] bool useDictionary
     ) {
+#pragma warning disable 8632
       var dict = useDictionary
         ? Utilities.CreateDictionaryFromSamples(32 * 1024, 30, compressionLevel)
+        // ReSharper disable once RedundantCast // downlevel impl requires
         : (ZStdDictionaryBuilder?) null;
+#pragma warning restore 8632
 
       var sample = Utilities.GenerateSampleBuffer(1000);
 

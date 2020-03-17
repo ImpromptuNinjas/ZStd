@@ -8,7 +8,8 @@ namespace ImpromptuNinjas.ZStd {
   public class ZStdCompressor
     : IDisposable
 #if !NETSTANDARD1_4 && !NETSTANDARD1_1
-      , ICloneable
+      ,
+      ICloneable
 #endif
   {
 
@@ -45,38 +46,36 @@ namespace ImpromptuNinjas.ZStd {
 #endif
 
     public unsafe void Free()
-      => FreeCCtx(Context);
+      => Context->Free();
 
     public unsafe UIntPtr GetSize()
-      => SizeOfCCtx(Context).EnsureZStdSuccess();
+      => Context->GetSize();
 
     public unsafe void Reset(ResetDirective directive)
-      => ResetCCtx(Context, directive).EnsureZStdSuccess();
+      => Context->Reset(directive);
 
-    public unsafe int Get(CompressionParameter parameter) {
-      GetParameter(Context, parameter, out var value).EnsureZStdSuccess();
-      return value;
-    }
+    public unsafe int Get(CompressionParameter parameter)
+      => Context->Get(parameter);
 
     public unsafe void Set(CompressionParameter parameter, int value)
-      => SetParameter(Context, parameter, value).EnsureZStdSuccess();
+      => Context->Set(parameter, value);
 
     public unsafe void UseDictionary([CanBeNull] ZStdCompressorDictionary dict)
-      => ReferenceDictionary(Context, dict != null ? dict.Reference : null).EnsureZStdSuccess();
+      => Context->UseDictionary(dict != null ? dict.Reference : null);
 
     public unsafe void ResetDictionary()
-      => Native.ZStdCCtx.ResetDictionary(Context).EnsureZStdSuccess();
+      => Context->ResetDictionary();
 
     public unsafe UIntPtr Compress(Span<byte> output, ReadOnlySpan<byte> input)
-      => Native.ZStdCCtx.Compress(Context, output, input).EnsureZStdSuccess();
+      => Context->Compress(output, input);
 
     public unsafe UIntPtr StreamCompress(ref ArraySegment<byte> output, ref ArraySegment<byte> input, EndDirective endOp)
-      => Native.ZStdCCtx.StreamCompress(Context, ref output, ref input, endOp).EnsureZStdSuccess();
+      => Context->StreamCompress(ref output, ref input, endOp);
 
     public unsafe UIntPtr StreamCompress(ref Buffer output, ref Buffer input, EndDirective endOp)
-      => Native.ZStdCCtx.StreamCompress(Context, ref output, ref input, endOp).EnsureZStdSuccess();
+      => Context->StreamCompress( ref output, ref input, endOp);
 
-    public unsafe UIntPtr ReadyToFlush => GetBytesReadyToFlush(Context);
+    public unsafe UIntPtr ReadyToFlush => Context->GetBytesReadyToFlush();
 
   }
 

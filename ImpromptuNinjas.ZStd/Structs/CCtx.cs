@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using static ImpromptuNinjas.ZStd.Native.ZStdCCtx;
+
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
@@ -62,6 +63,9 @@ namespace ImpromptuNinjas.ZStd {
 
     public static unsafe UIntPtr StreamCompress(ref this CCtx ctx, ref Buffer output, ref Buffer input, EndDirective endOp)
       => Native.ZStdCCtx.StreamCompress((CCtx*) Unsafe.AsPointer(ref ctx), ref output, ref input, endOp).EnsureZStdSuccess();
+
+    public static unsafe UIntPtr GetBytesReadyToFlush(ref this CCtx ctx)
+      => Native.ZStdCCtx.GetBytesReadyToFlush((CCtx*) Unsafe.AsPointer(ref ctx)).EnsureZStdSuccess();
 
   }
 
