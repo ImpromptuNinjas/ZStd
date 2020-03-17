@@ -22,7 +22,7 @@
             <GeneratePathProperty>true</GeneratePathProperty>
         </PackageReference>
         <Reference Include="ImpromptuNinjas.ZStd.dll">
-            <HintPath>$(PkgImpromptuNinjas_ZStd)\lib\netstandard1.1\ImpromptuNinjas.ZStd.dll</HintPath>
+            <HintPath>$(PkgImpromptuNinjas_ZStd)\lib\netstandard2.1\ImpromptuNinjas.ZStd.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>

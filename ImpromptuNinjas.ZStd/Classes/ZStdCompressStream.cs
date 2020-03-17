@@ -53,6 +53,39 @@ namespace ImpromptuNinjas.ZStd {
       base.Dispose(disposing);
     }
 
+#if !NETSTANDARD || NETSTANDARD2_1
+    public override void WriteByte(byte value)
+      => Write(new ReadOnlySpan<byte>(&value, 1));
+
+    public override void Write(ReadOnlySpan<byte> buffer) {
+      ValidateReadWriteArgs(buffer);
+      if (buffer.Length == 0)
+        return;
+
+      fixed (byte* pBuf = buffer) {
+        Input = new Buffer(pBuf, (UIntPtr) buffer.Length, default);
+        do {
+          // buffer full, copy to output
+          if (Output.Position == Output.Size) {
+            BaseStream.Write(new ReadOnlySpan<byte>(Output.GetPinnedPointer(), (int) Output.Position));
+            Output.Position = default;
+          }
+
+          _needsFlushing = Compressor.StreamCompress(ref Output, ref Input, EndDirective.Continue);
+          if (_needsFlushing == default && Output.Position != Output.Size)
+            break;
+        } while (Input.Position != Input.Size && (_needsFlushing != default || Output.Position == Output.Size));
+
+        if (Output.Position == default) {
+          return;
+        }
+
+        BaseStream.Write(new ReadOnlySpan<byte>(Output.GetPinnedPointer(), (int) Output.Position));
+        Output.Position = default;
+      }
+    }
+#endif
+
     public override void Write(byte[] buffer, int offset, int count) {
       ValidateReadWriteArgs(buffer, offset, count);
       if (count == 0 || buffer.Length == offset)

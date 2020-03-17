@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using JetBrains.Annotations;
 
@@ -18,6 +19,16 @@ namespace ImpromptuNinjas.ZStd {
     protected ZStdStream(Stream baseStream)
       => BaseStream = baseStream;
 
+
+    protected void ValidateReadWriteArgs(ReadOnlySpan<byte> buffer)
+    {
+      if (Disposed)
+        throw new ObjectDisposedException(GetType().Name);
+      if (buffer == null)
+        throw new ArgumentNullException(nameof(buffer));
+
+      Debug.Assert(buffer.Length >= 0);
+    }
 
     protected void ValidateReadWriteArgs(byte[] array, int offset, int count)
     {

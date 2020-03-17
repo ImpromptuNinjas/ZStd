@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 
 #if NETCOREAPP3_1
 [assembly: AssemblyMetadata("TFMDEF", "NETCOREAPP3.1")]
+#elif NETSTANDARD2_1
+[assembly: AssemblyMetadata("TFMDEF", "NETSTANDARD2_1")]
 #elif NETSTANDARD2_0
 [assembly: AssemblyMetadata("TFMDEF", "NETSTANDARD2_0")]
 #elif NETSTANDARD1_4

@@ -64,6 +64,62 @@ namespace ImpromptuNinjas.ZStd {
     public override async Task FlushAsync(CancellationToken cancellationToken)
       => await BaseStream.FlushAsync(cancellationToken);
 
+
+#if !NETSTANDARD || NETSTANDARD2_1
+    public override unsafe int ReadByte() {
+      // ReSharper disable once SuggestVarOrType_Elsewhere
+      Span<byte> buf = stackalloc byte[1];
+      return Read(buf) != 0 ? buf[0] : -1;
+    }
+
+    public override unsafe int Read(Span<byte> buffer) {
+      ValidateReadWriteArgs(buffer);
+      if (buffer.Length == 0)
+        return 0;
+
+      fixed (byte* pBuf = buffer) {
+        Output = new Buffer(pBuf, (UIntPtr) buffer.Length, default);
+
+        var edgeOfInput = false;
+        do {
+          var lastPos = Output.Position;
+          if (Input.Position == Input.Size && Input.Size != default) {
+            Input = new Buffer(
+              Input.GetPinnedPointer(),
+              (UIntPtr) BaseStream.Read(new Span<byte>(Input.GetPinnedPointer(), _bufferSize)),
+              default
+            );
+            // last read was complete and there is no more to read
+            edgeOfInput = Input.Size == default;
+          }
+
+          if (Input.Size.GreaterThanOrEqualTo(_suggestedNextInput) || Input.Size.EqualTo(_bufferSize)) {
+            _suggestedNextInput = Decompressor.StreamDecompress(ref Output, ref Input);
+          }
+          else {
+            edgeOfInput = true;
+          }
+
+          // remaining might be 9 or something if the decompressor is expecting a new frame
+          if (Output.Position == default && edgeOfInput)
+            break;
+
+          if (_suggestedNextInput == default && Input.Position != Input.Size)
+            break;
+
+          // break on stalls
+          if (Output.Position == lastPos && _suggestedNextInput != default && (Input.Size == default || Input.Position != Input.Size))
+            break;
+        } while (Output.Position != Output.Size);
+
+        if (Input.Position == Input.Size && Input.Size == default)
+          Input = new Buffer(Input.GetPinnedPointer(), (UIntPtr) _bufferSize, (UIntPtr) _bufferSize);
+
+        return (int) Output.Position;
+      }
+    }
+#endif
+
     public override unsafe int Read(byte[] buffer, int offset, int count) {
       ValidateReadWriteArgs(buffer, offset, count);
       if (count == 0 || buffer.Length == offset)
