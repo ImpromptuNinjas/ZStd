@@ -127,6 +127,17 @@
         <Compile Update="Structs\DictionaryParameters.cs">
           <WouldDependOn>DictionaryParameters</WouldDependOn>
         </Compile>
+        <Compile Update="Classes\ZStdDictionaryBuilder.cs">
+          <WouldDependOn>ZStdDictionaryBuilder</WouldDependOn>
+        </Compile>
+        <Compile Update="Classes\ZStdDictionaryBuilder.AsyncTraining.cs">
+          <WouldDependOn>ZStdDictionaryBuilder.cs</WouldDependOn>
+          <DependentUpon>ZStdDictionaryBuilder.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Classes\ZStdDictionaryBuilder.Training.cs">
+          <WouldDependOn>ZStdDictionaryBuilder.cs</WouldDependOn>
+          <DependentUpon>ZStdDictionaryBuilder.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

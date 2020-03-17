@@ -12,7 +12,7 @@ using static ImpromptuNinjas.ZStd.Native;
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
-  public partial struct ZStdDictionaryBuilder
+  public partial class ZStdDictionaryBuilder
 #if !NETSTANDARD1_4 && !NETSTANDARD1_1
     : ICloneable
 #endif

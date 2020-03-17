@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace ImpromptuNinjas.ZStd {
 
-  public partial struct ZStdDictionaryBuilder {
+  public partial class ZStdDictionaryBuilder {
 
 #if !NETSTANDARD || NETSTANDARD2_1
     public DictionaryTrainingParameters Train(AsyncSamplerDelegate sampler, int compressionLevel = default, uint nbThreads = 1, uint tuningSteps = 0) {

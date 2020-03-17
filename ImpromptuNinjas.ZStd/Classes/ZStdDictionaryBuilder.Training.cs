@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace ImpromptuNinjas.ZStd {
 
-  public partial struct ZStdDictionaryBuilder {
+  public partial class ZStdDictionaryBuilder {
 
     public DictionaryTrainingParameters Train(SamplerDelegate sampler, int compressionLevel = default, uint nbThreads = 1, uint tuningSteps = 0) {
       var parameters = GetDefaultTrainingParameters(compressionLevel, nbThreads, tuningSteps);
