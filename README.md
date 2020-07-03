@@ -1,9 +1,7 @@
-
 ![ZStd for .NET](https://media.githubusercontent.com/media/ImpromptuNinjas/ZStd/master/icon.png)
 ZStd for .NET
 ==================
-[![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/)
-[![Build & Test](https://github.com/ImpromptuNinjas/ZStd/workflows/Build%20&%20Test/badge.svg?branch=master)](https://github.com/ImpromptuNinjas/ZStd/actions?query=workflow%3A%22Build+%26+Test%22+branch%3Amaster)
+[![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/) [![Build & Test](https://github.com/ImpromptuNinjas/ZStd/workflows/Build%20&%20Test/badge.svg?branch=master)](https://github.com/ImpromptuNinjas/ZStd/actions?query=workflow%3A%22Build+%26+Test%22+branch%3Amaster)
 
 **ZStd** is a multi-platform .NET wrapper of the library build of Facebook's Zstandard project.
 
@@ -65,8 +63,7 @@ Reference
 
 #### Dictionaries
 
-```c#
-
+```csharp
 // pick a compression level or use 0, considered 'auto' in most cases
 var compressionLevel = 3;
 //var compressionLevel = ZStdCompressor.MinimumCompressionLevel; // probably 1
@@ -99,11 +96,12 @@ using var cDict = dict.CreateCompressorDictionary(compressionLevel);
 using var dDict = dict.CreateDecompressorDictionary();
 
 // be sure to dispose of your compressors/decompressors before your dictionary references
+
 ```
 
 #### Compression
 
-```c#
+```csharp
 // create a context
 using var cCtx = new ZStdCompressor();
 
@@ -123,11 +121,12 @@ var compressedSize = cCtx.Compress(compressBuffer, inputData);
 
 // retrieve your compressed frame
 var compressedFrame = new ArraySegment<byte>(compressBuffer, 0, (int) compressedSize);
+
 ```
 
 #### Decompression
 
-```c#
+```csharp
 // create a context
 var dCtx = new ZStdDecompressor();
 
@@ -149,7 +148,7 @@ var decompressedFrame = new ArraySegment<byte>(decompressBuffer, 0, (int) decomp
 
 #### Stream Compression
 
-```c#
+```csharp
 // have somewhere to put the compressed output, any stream will do
 using var compressed = new MemoryStream();
 
@@ -169,7 +168,7 @@ compressStream.Flush();
 
 #### Stream Decompression
 
-```c#
+```csharp
 // consume the compressed input stream with the stream decompressor
 using var decompressStream = new ZStdDecompressStream(compressedInput);
 
