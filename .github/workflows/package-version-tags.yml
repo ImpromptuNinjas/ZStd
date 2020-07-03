@@ -1,0 +1,30 @@
+name: Package Version Tags
+on:
+  push:
+    tags:
+    - '*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+        source-url: https://nuget.pkg.github.com/space-wizards/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Write Official Strong Name Key
+      run: echo ${{ secrets.OFFICIAL_SNK }} | base64 -d > official.snk
+      env:
+        OFFICIAL_SNK: ${{secrets.OFFICIAL_SNK}}
+    - name: Build & Pack Library
+      run: dotnet pack -c Release -p:IsOfficial=true --include-symbols
+    - name: Push Nupkg
+      run: dotnet nuget push -s nuget.org -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate CannyFastMath/nupkg/*.nupkg
