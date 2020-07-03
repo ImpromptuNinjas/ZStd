@@ -11,7 +11,7 @@ RUN cd /src \
 # linux-musl-x64
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS linux-musl-x64
 COPY / /src
-
+RUN apk add --no-cache git
 RUN cd /src \
     && dotnet test -r . -l 'trx;LogFileName=TestResultNC31.xml' -c Release ImpromptuNinjas.ZStd.Tests \
     && dotnet test -r . -l 'trx;LogFileName=TestResultNS20.xml' -c Release ImpromptuNinjas.ZStd.Tests/NetStandard20 \
