@@ -3,6 +3,7 @@
         <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
         <Version>1.4.4.8</Version>
     </PropertyGroup>
+
     <Target Name="UpdatePackageCacheForDependencies" BeforeTargets="Restore" Condition="@(NuPkgRef->Count())!=0">
         <ItemGroup>
             <NuPkgRef Update="**">
@@ -21,5 +22,29 @@
             SourceFiles="%(NuPkgRef.Identity)"
             DestinationFolder="$(NuGetPackageRoot)\%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"
         />
+    </Target>
+
+    <PropertyGroup>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile Condition=" '$(IsOfficial)' == 'True' ">$(SolutionDir)official.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile Condition=" '$(IsOfficial)' != 'True' AND '$(IsOfficialCompatible)' != 'True' ">$(SolutionDir)unofficial.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile Condition=" '$(IsOfficial)' != 'True' AND '$(IsOfficialCompatible)' == 'True' ">$(SolutionDir)official-public.snk</AssemblyOriginatorKeyFile>
+        <PublicSign Condition=" '$(IsOfficial)' == 'True' AND '$(IsOfficialCompatible)' != 'True' ">False</PublicSign>
+        <PublicSign Condition=" '$(IsOfficial)' != 'True' OR '$(IsOfficialCompatible)' == 'True' ">True</PublicSign>
+    </PropertyGroup>
+
+
+    <PropertyGroup Condition=" '$(IsOfficial)' == 'True' ">
+        <DefineConstants Condition=" '$(DefineConstants)' != '' ">$(DefineConstants);OFFICIAL</DefineConstants>
+        <DefineConstants Condition=" '$(DefineConstants)' == '' ">OFFICIAL</DefineConstants>
+    </PropertyGroup>
+
+    <Target Name="PackageAssemblySigningReport" AfterTargets="Pack" Condition=" '$(IsPackable)' != 'False' ">
+        <Message Importance="high" Text="IsOfficial: $(IsOfficial)"/>
+        <Message Importance="high" Text="IsOfficialCompatible: $(IsOfficialCompatible)"/>
+        <Message Importance="high" Text="SignAssembly: $(SignAssembly)"/>
+        <Message Importance="high" Text="PublicSign: $(PublicSign)"/>
+        <Message Importance="high" Text="AssemblyOriginatorKeyFile: $(AssemblyOriginatorKeyFile)"/>
+        <Message Importance="high" Text="DefineConstants: $(DefineConstants)"/>
     </Target>
 </Project>

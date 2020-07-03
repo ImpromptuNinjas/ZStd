@@ -36,3 +36,6 @@ obj/
 !/ImpromptuNinjas.ZStd/runtimes/**/*.dll
 TestResult.*
 TestResults
+/official.snk
+/.env
+/.*key

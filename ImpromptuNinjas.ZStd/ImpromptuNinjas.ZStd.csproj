@@ -15,17 +15,19 @@
         <Description>A multi-platform .NET wrapper of the library build of Facebook's Zstandard project.</Description>
         <Authors>Tyler Young</Authors>
         <Copyright>Copyright © 2020 Tyler Young</Copyright>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageOutputDir>$(SolutionDir)</PackageOutputDir>
         <RepositoryUrl>https://github.com/ImpromptuNinjas/ZStd.git</RepositoryUrl>
         <PackageTags>Zstd Zstandard libzstd compression</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
+        <IsPackable>True</IsPackable>
+        <GenerateAssemblyConfigurationAttribute>False</GenerateAssemblyConfigurationAttribute>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" PrivateAssets="All" />
-        <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="All" />
-        <PackageReference Include="InlineIL.Fody" Version="1.3.6" PrivateAssets="All">
+        <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" PrivateAssets="All" />
+        <PackageReference Include="Fody" Version="6.2.0" PrivateAssets="All" />
+        <PackageReference Include="InlineIL.Fody" Version="1.4.2" PrivateAssets="All">
             <GeneratePathProperty>true</GeneratePathProperty>
         </PackageReference>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
@@ -34,21 +36,21 @@
     <Choose>
         <When Condition="$(TargetFramework.StartsWith('netcoreapp'))">
             <ItemGroup>
-                <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
+                <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
             </ItemGroup>
         </When>
         <When Condition="$(TargetFramework.StartsWith('netstandard'))">
             <Choose>
                 <When Condition="$(TargetFramework.EndsWith('2.1'))">
                     <ItemGroup>
-                        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
+                        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
                         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
                     </ItemGroup>
                 </When>
                 <When Condition="$(TargetFramework.EndsWith('2.0'))">
                     <ItemGroup>
-                        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
-                        <PackageReference Include="System.Memory" Version="4.5.3" />
+                        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
+                        <PackageReference Include="System.Memory" Version="4.5.4" />
                     </ItemGroup>
                 </When>
                 <When Condition="$(TargetFramework.EndsWith('1.4'))">
@@ -56,12 +58,9 @@
                         <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
                     </PropertyGroup>
                     <ItemGroup>
-                        <PackageReference Include="InlineIL.Fody" Version="1.3.6" PrivateAssets="All" />
-                    </ItemGroup>
-                    <ItemGroup>
-                        <PackageReference Include="System.Memory" Version="4.5.3" />
+                        <PackageReference Include="System.Memory" Version="4.5.4" />
                         <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
-                        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
+                        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
                     </ItemGroup>
                 </When>
                 <When Condition="$(TargetFramework.EndsWith('1.1'))">
@@ -69,9 +68,9 @@
                         <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
                     </PropertyGroup>
                     <ItemGroup>
-                        <PackageReference Include="InlineIL.Fody" Version="1.3.6" PrivateAssets="All" />
-                    </ItemGroup>
-                    <ItemGroup>
+                        <PackageReference Include="System.Collections" Version="4.3.0" />
+                        <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+                        <PackageReference Include="System.Threading" Version="4.3.0" />
                         <PackageReference Include="System.Memory" Version="4.5.3" />
                     </ItemGroup>
                 </When>
@@ -112,32 +111,7 @@
             <WouldDependOn>$([System.Text.RegularExpressions.Regex]::Replace('%(Filename)', '^(.*?)\..*$', '$1.cs'))</WouldDependOn>
             <DependentUpon Condition="'%(DependentUpon)' == '' And '%(WouldDependOn)' != '%(Filename)'">%(WouldDependOn)</DependentUpon>
         </Compile>
-        <Compile Update="Utilities\NativeLibrary.cs">
-          <WouldDependOn>NativeLibrary</WouldDependOn>
-        </Compile>
-        <Compile Update="Delegates\AsyncSamplerDelegate.cs">
-          <WouldDependOn>AsyncSamplerDelegate</WouldDependOn>
-        </Compile>
-        <Compile Update="Delegates\SamplerDelegate.cs">
-          <WouldDependOn>SamplerDelegate</WouldDependOn>
-        </Compile>
-        <Compile Update="Structs\DictionaryTrainingParameters.cs">
-          <WouldDependOn>DictionaryTrainingParameters</WouldDependOn>
-        </Compile>
-        <Compile Update="Structs\DictionaryParameters.cs">
-          <WouldDependOn>DictionaryParameters</WouldDependOn>
-        </Compile>
-        <Compile Update="Classes\ZStdDictionaryBuilder.cs">
-          <WouldDependOn>ZStdDictionaryBuilder</WouldDependOn>
-        </Compile>
-        <Compile Update="Classes\ZStdDictionaryBuilder.AsyncTraining.cs">
-          <WouldDependOn>ZStdDictionaryBuilder.cs</WouldDependOn>
-          <DependentUpon>ZStdDictionaryBuilder.cs</DependentUpon>
-        </Compile>
-        <Compile Update="Classes\ZStdDictionaryBuilder.Training.cs">
-          <WouldDependOn>ZStdDictionaryBuilder.cs</WouldDependOn>
-          <DependentUpon>ZStdDictionaryBuilder.cs</DependentUpon>
-        </Compile>
+
     </ItemGroup>
 
     <ItemGroup>
