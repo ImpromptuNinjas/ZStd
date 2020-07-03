@@ -2,7 +2,8 @@
 ![ZStd for .NET](https://media.githubusercontent.com/media/ImpromptuNinjas/ZStd/master/icon.png)
 ZStd for .NET
 ==================
-[![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/) ![Build & Test](https://github.com/ImpromptuNinjas/ZStd/workflows/Build%20&%20Test/badge.svg?branch=master)
+[![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/)
+[![Build & Test](https://github.com/ImpromptuNinjas/ZStd/workflows/Build%20&%20Test/badge.svg?branch=master)](https://github.com/ImpromptuNinjas/ZStd/actions?query=workflow%3A%22Build+%26+Test%22+branch%3Amaster)
 
 **ZStd** is a multi-platform .NET wrapper of the library build of Facebook's Zstandard project.
 
