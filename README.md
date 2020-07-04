@@ -3,7 +3,7 @@ ZStd for .NET
 ==================
 [![NuGet](https://img.shields.io/nuget/v/ImpromptuNinjas.ZStd.svg)](https://www.nuget.org/packages/ImpromptuNinjas.ZStd/) [![Build & Test](https://github.com/ImpromptuNinjas/ZStd/workflows/Build%20&%20Test/badge.svg?branch=master)](https://github.com/ImpromptuNinjas/ZStd/actions?query=workflow%3A%22Build+%26+Test%22+branch%3Amaster)
 
-**ZStd** is a multi-platform .NET wrapper of the library build of Facebook's Zstandard project.
+**ZStd** is a multi-platform .NET binding of Facebook's Zstandard library.
 
 ## Supported platforms:
 * Windows
@@ -35,7 +35,7 @@ _Note: In the not too distant future support for 32-bit architectures will likel
 
 Take a look at the unit tests to explore its behavior in different situations.
 
-This is in the middle stages of development, and features may be added over time.
+This is in the later stages of development, and features are less likely to be added over time.
 
 ### Known Issues:
 * Currently the native dependencies are shipped with this NuGet package for all platforms.
