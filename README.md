@@ -19,7 +19,7 @@ ZStd for .NET
 * Apple OSX
   - 64-bit only
 
-_Note: ARM is support is currently hard-float only, no soft-float platform support unless requested._
+_Note: ARM support is currently hard-float only, no soft-float platform support unless requested._
 _Note: In the not too distant future support for 32-bit architectures will likely be dropped._
 
 ## Features:
