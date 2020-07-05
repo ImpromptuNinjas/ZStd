@@ -68,6 +68,7 @@ Reference
 // pick a compression level or use 0, considered 'auto' in most cases
 var compressionLevel = 3;
 //var compressionLevel = ZStdCompressor.MinimumCompressionLevel; // probably 1
+// Note: negative levels do exist as per zstd documentation, but this just calls ZSTD_minCLevel
 //var compressionLevel = ZStdCompressor.MaximumCompressionLevel; // probably 22
 
 // allocate a 32kB buffer to build a new dictionary
