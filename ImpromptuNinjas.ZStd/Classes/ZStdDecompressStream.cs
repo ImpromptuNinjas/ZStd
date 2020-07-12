@@ -65,7 +65,7 @@ namespace ImpromptuNinjas.ZStd {
       => await BaseStream.FlushAsync(cancellationToken);
 
 
-#if !NETSTANDARD || NETSTANDARD2_1
+#if NETSTANDARD2_1 || NETCOREAPP
     public override unsafe int ReadByte() {
       // ReSharper disable once SuggestVarOrType_Elsewhere
       Span<byte> buf = stackalloc byte[1];

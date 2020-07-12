@@ -8,7 +8,7 @@ namespace ImpromptuNinjas.ZStd {
 
   public partial class ZStdDictionaryBuilder {
 
-#if !NETSTANDARD || NETSTANDARD2_1
+#if NETSTANDARD2_1 || NETCOREAPP
     public DictionaryTrainingParameters Train(AsyncSamplerDelegate sampler, int compressionLevel = default, uint nbThreads = 1, uint tuningSteps = 0) {
       var parameters = GetDefaultTrainingParameters(compressionLevel, nbThreads, tuningSteps);
 
