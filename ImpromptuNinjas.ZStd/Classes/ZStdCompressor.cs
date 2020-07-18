@@ -34,7 +34,7 @@ namespace ImpromptuNinjas.ZStd {
     public static int MinimumCompressionLevel
       => _lazyMinimumCompressionLevel ??= Native.ZStd.GetMinCompressionLevel();
 
-    public static ulong GetUpperBound(UIntPtr srcSize)
+    public static UIntPtr GetUpperBound(UIntPtr srcSize)
       => CompressBound(srcSize);
 
     public unsafe ZStdCompressor Clone(ulong pledgedSrcSize = ulong.MaxValue)

@@ -42,7 +42,7 @@ namespace ImpromptuNinjas.ZStd.Tests {
 
       cCtx.UseDictionary(cDict);
 
-      var compressBufferSize = CCtx.GetUpperBound((UIntPtr) sample.Length);
+      var compressBufferSize = CCtx.GetUpperBound((UIntPtr) sample.Length).ToUInt32();
 
       var compressBuffer = new byte[compressBufferSize];
 
