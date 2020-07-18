@@ -37,7 +37,7 @@ namespace ImpromptuNinjas.ZStd.Tests {
       Console.WriteLine($"Compression Level: {compressionLevel}");
 
       // lol "min" compression level
-      var bufSize = (int) (CCtx.GetUpperBound((UIntPtr) sample.Length) * 1.05);
+      var bufSize = (int) (CCtx.GetUpperBound((UIntPtr) sample.Length).ToUInt32() * 1.05);
       var buffer = new byte[bufSize]; // compression is much worse when fed piecemeal
       fixed (byte* pBuffer = &buffer[0]) {
         using var compressed = new MemoryRegionStream(pBuffer, bufSize);
@@ -46,6 +46,8 @@ namespace ImpromptuNinjas.ZStd.Tests {
         // compression
 
         var run = 0;
+        var expected = 0L;
+        var totalWrote = 0L;
         var wroteThisRun = 0L;
 
         IEnumerable<long> Feed() {
@@ -60,12 +62,14 @@ namespace ImpromptuNinjas.ZStd.Tests {
               var rem = sample.Length - (i + x);
               if (rem < 0)
                 x += rem;
+              expected += x;
               compressStream.Write(sample, i, x);
               if (flushMode != 0)
                 compressStream.Flush(flushMode == 2);
               wroteThisRun = compressed.Length - toDecompress.Length;
               if (wroteThisRun > 0)
                 toDecompress.SetLength(compressed.Length);
+              totalWrote += wroteThisRun;
 
               i += x;
               yield return wroteThisRun;
@@ -75,6 +79,7 @@ namespace ImpromptuNinjas.ZStd.Tests {
           wroteThisRun = compressed.Length - toDecompress.Length;
           if (wroteThisRun > 0)
             toDecompress.SetLength(compressed.Length);
+          totalWrote += wroteThisRun;
 
           Console.WriteLine($"Compressed to: {compressed.Length} ({(double) compressed.Length / (double) sample.Length:P})");
 
@@ -104,10 +109,11 @@ namespace ImpromptuNinjas.ZStd.Tests {
             readThisRun += read;
           } while (read > 0);
 
-          if (wroteThisRun != readThisRun)
-            Debugger.Break();
+          //if (wroteThisRun != readThisRun)
+          //  Debugger.Break();
           Console.WriteLine($"Run: {run++} Wrote: {wroteThisRun}, Read: {readThisRun}");
         } while (feed.MoveNext());
+        Console.WriteLine($"Total Wrote: {totalWrote}, Read: {totalRead}/{expected}");
 
         decompressStream.ReadByte().Should().Be(-1);
 
