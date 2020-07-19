@@ -83,7 +83,7 @@ namespace ImpromptuNinjas.ZStd {
         ? checked((long) a.ToUInt64()) == b
         : a.ToUInt32() == b;
 
-#if NETSTANDARD && !NETSTANDARD2_1
+#if !NETSTANDARD2_1 && !NETCOREAPP
     internal static void Write(this Stream stream, ReadOnlySpan<byte> bytes) {
       var count = bytes.Length;
       var copy = ArrayPool<byte>.Shared.Rent(count);

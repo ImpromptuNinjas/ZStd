@@ -1,4 +1,4 @@
-#if NETSTANDARD
+#if NETFRAMEWORK || NETSTANDARD
 
 using System;
 using System.Collections.Generic;
@@ -69,7 +69,11 @@ namespace ImpromptuNinjas.ZStd {
 
         var loaded = Load(libraryName);
         if (loaded == default)
-          throw new DllNotFoundException(libraryName);
+#if NETSTANDARD1_1
+          throw new Exception(libraryName);
+#else
+          throw new InvalidProgramException(libraryName);
+#endif
 
         return loaded;
       }
@@ -81,7 +85,11 @@ namespace ImpromptuNinjas.ZStd {
 
       var loaded = Loader.Load(libraryPath);
       if (loaded == default)
-        throw new DllNotFoundException(libraryPath);
+#if NETSTANDARD1_1
+          throw new InvalidOperationException(libraryPath);
+#else
+          throw new InvalidProgramException(libraryPath);
+#endif
 
       return loaded;
     }

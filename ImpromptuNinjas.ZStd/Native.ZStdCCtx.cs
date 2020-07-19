@@ -109,13 +109,13 @@ namespace ImpromptuNinjas.ZStd {
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static ulong CompressBound(UIntPtr srcSize) {
+      public static UIntPtr CompressBound(UIntPtr srcSize) {
         IL.Push(srcSize);
         IL.Push(ZSTD_compressBound);
         IL.Emit.Tail();
-        IL.Emit.Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(ulong),
+        IL.Emit.Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(UIntPtr),
           typeof(UIntPtr)));
-        return IL.Return<ulong>();
+        return IL.Return<UIntPtr>();
       }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]

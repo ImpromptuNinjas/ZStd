@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ImpromptuNinjas.ZStd {
 
-  #if !NETSTANDARD || NETSTANDARD2_1
+  #if NETSTANDARD2_1 || NETCOREAPP
   public delegate IAsyncEnumerable<ArraySegment<byte>> AsyncSamplerDelegate();
 
   #endif

@@ -1,10 +1,10 @@
 <Project>
     <PropertyGroup>
         <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
-        <Version>1.4.5-1</Version>
+        <Version>1.4.5.1</Version>
     </PropertyGroup>
 
-    <Target Name="UpdatePackageCacheForDependencies" BeforeTargets="Restore" Condition="@(NuPkgRef->Count())!=0">
+    <Target Name="UpdatePackageCacheForDependencies" BeforeTargets="Build" Condition="'@(NuPkgRef->Count())'!='0'">
         <ItemGroup>
             <NuPkgRef Update="**">
                 <Id>$([System.Text.RegularExpressions.Regex]::Replace('%(NuPkgRef.Filename)', '^(.*?)\.(?:\.?[0-9]+){3,}(?:[-a-z]+)?$', '$1'))</Id>
@@ -14,14 +14,11 @@
                 <LowerCaseId>$([System.String]::Copy('%(NuPkgRef.Id)').ToLowerInvariant())</LowerCaseId>
             </NuPkgRef>
         </ItemGroup>
-
-        <Message Importance="high" Text="Updating package cache..."/>
-        <Message Importance="high" Text="%(NuPkgRef.Id) %(NuPkgRef.Version)"/>
-        <RemoveDir Directories="$(NuGetPackageRoot)\%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"/>
-        <Unzip
-            SourceFiles="%(NuPkgRef.Identity)"
-            DestinationFolder="$(NuGetPackageRoot)\%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"
-        />
+        <Message Importance="high" Text="Updating package cache: %(NuPkgRef.Id) %(NuPkgRef.Version)"/>
+        <Unzip SourceFiles="%(NuPkgRef.Identity)"
+               DestinationFolder="$(NuGetPackageRoot)%(NuPkgRef.LowerCaseId)\%(NuPkgRef.Version)\"
+               SkipUnchangedFiles="true" ContinueOnError="true">
+        </Unzip>
     </Target>
 
     <PropertyGroup>

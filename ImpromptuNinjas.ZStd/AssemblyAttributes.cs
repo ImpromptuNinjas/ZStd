@@ -6,11 +6,11 @@ using JetBrains.Annotations;
 
 #if !DEBUG
 
-#if !NETSTANDARD1_1
+#if !NETSTANDARD1_1 && !NETFRAMEWORK
 [assembly: DisablePrivateReflection]
 #endif
 
-#if !NETSTANDARD1_4 && !NETSTANDARD1_1
+#if !NETSTANDARD1_4 && !NETSTANDARD1_1 && !NETFRAMEWORK
 [assembly: SuppressIldasm]
 #endif
 

@@ -6,7 +6,7 @@ namespace ImpromptuNinjas.ZStd.Utilities {
   public sealed partial class MemoryRegionStream {
 
     public
-#if !NETSTANDARD || NETSTANDARD2_1
+#if NETSTANDARD2_1 || NETCOREAPP
     override
 #endif
       unsafe int Read(Span<byte> buffer) {

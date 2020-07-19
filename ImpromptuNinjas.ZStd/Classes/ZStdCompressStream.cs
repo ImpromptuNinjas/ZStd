@@ -53,7 +53,7 @@ namespace ImpromptuNinjas.ZStd {
       base.Dispose(disposing);
     }
 
-#if !NETSTANDARD || NETSTANDARD2_1
+#if NETSTANDARD2_1 || NETCOREAPP
     public override void WriteByte(byte value)
       => Write(new ReadOnlySpan<byte>(&value, 1));
 

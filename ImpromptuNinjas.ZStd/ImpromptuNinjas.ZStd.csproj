@@ -5,7 +5,7 @@
         <PackageOutputPath>$(SolutionDir)</PackageOutputPath>
         <IncludeSource>False</IncludeSource>
         <LangVersion>8</LangVersion>
-        <TargetFrameworks>netstandard1.1;netstandard1.4;netstandard2.0;netstandard2.1;netcoreapp31</TargetFrameworks>
+        <TargetFrameworks>net45;netstandard1.1;netstandard1.4;netstandard2.0;netstandard2.1;netcoreapp31</TargetFrameworks>
         <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
     </PropertyGroup>
 
@@ -34,6 +34,16 @@
     </ItemGroup>
 
     <Choose>
+        <When Condition="'$(TargetFramework)'=='net45'">
+            <ItemGroup>
+                <PackageReference Include="System.Buffers" Version="4.5.1" />
+                <PackageReference Include="System.Memory" Version="4.5.1" />
+                <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+                <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+                <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
+                <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+            </ItemGroup>
+        </When>
         <When Condition="$(TargetFramework.StartsWith('netcoreapp'))">
             <ItemGroup>
                 <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
@@ -44,7 +54,7 @@
                 <When Condition="$(TargetFramework.EndsWith('2.1'))">
                     <ItemGroup>
                         <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.4" />
-                        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
+                        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
                     </ItemGroup>
                 </When>
                 <When Condition="$(TargetFramework.EndsWith('2.0'))">
@@ -71,7 +81,7 @@
                         <PackageReference Include="System.Collections" Version="4.3.0" />
                         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
                         <PackageReference Include="System.Threading" Version="4.3.0" />
-                        <PackageReference Include="System.Memory" Version="4.5.3" />
+                        <PackageReference Include="System.Memory" Version="4.5.4" />
                     </ItemGroup>
                 </When>
             </Choose>
@@ -83,6 +93,20 @@
             <Pack>True</Pack>
             <PackageCopyToOutput>True</PackageCopyToOutput>
             <PackagePath>runtimes\</PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>%(Identity)</Link>
+        </Content>
+        <Content Include="runtimes\win-x64\native\libzstd.dll">
+            <Pack>True</Pack>
+            <PackageCopyToOutput>True</PackageCopyToOutput>
+            <PackagePath>runtimes\win\native\net45\libzstd64.dll</PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>%(Identity)</Link>
+        </Content>
+        <Content Include="runtimes\win-x86\native\libzstd.dll">
+            <Pack>True</Pack>
+            <PackageCopyToOutput>True</PackageCopyToOutput>
+            <PackagePath>runtimes\win\native\net45\libzstd32.dll</PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>%(Identity)</Link>
         </Content>
