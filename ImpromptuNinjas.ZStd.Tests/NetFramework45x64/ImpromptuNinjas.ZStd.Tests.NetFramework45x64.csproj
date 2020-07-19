@@ -34,7 +34,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <NuPkgRef Include="..\..\*.nupkg">
+        <NuPkgRef Include="$(SolutionDir)\*.nupkg">
             <Visible>False</Visible>
         </NuPkgRef>
     </ItemGroup>
