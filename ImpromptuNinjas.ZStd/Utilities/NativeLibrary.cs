@@ -43,7 +43,7 @@ namespace ImpromptuNinjas.ZStd {
       var export = Loader.GetExport(handle, name);
       if (export == default)
 #if !NETSTANDARD1_4 && !NETSTANDARD1_1
-          throw new EntryPointNotFoundException(name);
+        throw new EntryPointNotFoundException(name);
 #else
         throw new TypeLoadException($"Entry point not found: {name}");
 #endif
@@ -88,7 +88,7 @@ namespace ImpromptuNinjas.ZStd {
 #if NETSTANDARD1_1
           throw new InvalidOperationException(libraryPath);
 #else
-          throw new InvalidProgramException(libraryPath);
+        throw new InvalidProgramException(libraryPath);
 #endif
 
       return loaded;
@@ -108,16 +108,26 @@ namespace ImpromptuNinjas.ZStd {
 
       static LibDl() {
         //Trace.TraceInformation($"LibDl initializing.");
-        try {
-          var loader = LibDl2.Instance;
+        INativeLibraryLoader loader;
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+          // delayed linkage means we can't check for dl2 safely
+          loader = new LibDl1();
           loader.Init();
-          Instance = loader;
         }
-        catch (Exception) {
-          var loader = LibDl1.Instance;
-          loader.Init();
-          Instance = loader;
+        else {
+          // not delayed linkage
+          try {
+            loader = new LibDl2();
+            loader.Init();
+          }
+          catch {
+            loader = new LibDl1();
+            loader.Init();
+          }
         }
+
+        Instance = loader;
       }
 
       internal static readonly INativeLibraryLoader Instance;
@@ -127,16 +137,11 @@ namespace ImpromptuNinjas.ZStd {
     private sealed class LibDl1 : INativeLibraryLoader {
 
       // ReSharper disable once MemberHidesStaticFromOuterClass
-      private const string LibName = "libdl"; // can be libdl.so or libdl.dylib
-
-      private LibDl1() {
-      }
-
-      internal static readonly INativeLibraryLoader Instance = new LibDl1();
+      private const string LibName = "dl"; // can be libdl.so or libdl.dylib
 
       [DllImport(LibName, EntryPoint = "dlopen")]
       // ReSharper disable once MemberHidesStaticFromOuterClass
-      private static extern IntPtr Load(string fileName, int flags);
+      internal static extern IntPtr Load(string fileName, int flags);
 
       [DllImport(LibName, EntryPoint = "dlsym")]
       // ReSharper disable once MemberHidesStaticFromOuterClass
@@ -156,16 +161,11 @@ namespace ImpromptuNinjas.ZStd {
     private sealed class LibDl2 : INativeLibraryLoader {
 
       // ReSharper disable once MemberHidesStaticFromOuterClass
-      private const string LibName = "libdl.so.2";
-
-      private LibDl2() {
-      }
-
-      internal static readonly INativeLibraryLoader Instance = new LibDl2();
+      private const string LibName = "dl.so.2";
 
       [DllImport(LibName, EntryPoint = "dlopen")]
       // ReSharper disable once MemberHidesStaticFromOuterClass
-      private static extern IntPtr Load(string fileName, int flags);
+      internal static extern IntPtr Load(string fileName, int flags);
 
       [DllImport(LibName, EntryPoint = "dlsym")]
       // ReSharper disable once MemberHidesStaticFromOuterClass
