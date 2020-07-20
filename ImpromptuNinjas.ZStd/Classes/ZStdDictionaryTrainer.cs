@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace ImpromptuNinjas.ZStd {
 
   [PublicAPI]
-  public class ZstdDictionaryTrainer : IEnumerable<ArraySegment<byte>> {
+  public class ZStdDictionaryTrainer : IEnumerable<ArraySegment<byte>> {
 
     public ZStdDictionaryBuilder DictionaryBuilder {
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -45,7 +45,7 @@ namespace ImpromptuNinjas.ZStd {
       get => new ReadOnlySpan<byte>(_buffer, 0, _offset);
     }
 
-    public ZstdDictionaryTrainer(ZStdDictionaryBuilder dictionaryBuilder, in DictionaryTrainingParameters parameterTemplate) {
+    public ZStdDictionaryTrainer(ZStdDictionaryBuilder dictionaryBuilder, in DictionaryTrainingParameters parameterTemplate) {
       _parameters = parameterTemplate;
       DictionaryBuilder = dictionaryBuilder;
     }

@@ -24,8 +24,8 @@ namespace ImpromptuNinjas.ZStd {
         .EnsureZDictSuccess();
     }
 
-    public ZstdDictionaryTrainer CreateTrainer(int compressionLevel = default, uint nbThreads = 1, uint tuningSteps = 0)
-      => new ZstdDictionaryTrainer(this, GetDefaultTrainingParameters(compressionLevel, nbThreads, tuningSteps));
+    public ZStdDictionaryTrainer CreateTrainer(int compressionLevel = default, uint nbThreads = 1, uint tuningSteps = 0)
+      => new ZStdDictionaryTrainer(this, GetDefaultTrainingParameters(compressionLevel, nbThreads, tuningSteps));
 
   }
 
