@@ -37,7 +37,18 @@ namespace ImpromptuNinjas.ZStd.Tests {
     public static ZStdDictionaryBuilder CreateDictionaryFromSamples(int bufferSize, int sampleCount, int compressionLevel) {
       var dict = new ZStdDictionaryBuilder(bufferSize);
 
-      var trainedParams = dict.Train(() => GenerateSamples(sampleCount), compressionLevel);
+      var trainer = dict.CreateTrainer(compressionLevel);
+
+      var samples = GenerateSamples(sampleCount);
+
+      foreach ( var sample in samples )
+        trainer.Sample(sample);
+
+      trainer.Train();
+
+      var trainedParams = trainer.TrainingParameters;
+
+      //var trainedParams = dict.Train(() => GenerateSamples(sampleCount), compressionLevel);
 
       trainedParams.SegmentSize.Should().NotBe(0);
 
