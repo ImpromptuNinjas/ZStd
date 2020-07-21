@@ -19,47 +19,61 @@ namespace ImpromptuNinjas.ZStd {
 
       var ptrBits = sizeof(void*) * 8;
 
+      // ReSharper disable once RedundantAssignment
+      IntPtr lib = default;
+
 #if NETFRAMEWORK
       LibPath = Path.Combine(baseDir, "libzstd.dll");
       if (!File.Exists(LibPath))
         LibPath = Path.Combine(baseDir, $"libzstd{ptrBits}.dll");
 #else
-      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        LibPath = Path.Combine(baseDir, "runtimes", ptrBits == 32 ? "win-x86" : "win-x64", "native", "libzstd.dll");
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        LibPath = Path.Combine(baseDir, "runtimes", "osx-x64", "native", "libzstd.dylib");
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        LibPath = Path.Combine(baseDir, "runtimes", $"{(IsMusl() ? "linux-musl-" : "linux-")}{GetProcArchString()}", "native", "libzstd.so");
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+        LibPath = Path.Combine(baseDir, "libzstd.dll");
+        if (!TryLoad(LibPath, out lib))
+          LibPath = Path.Combine(baseDir, "runtimes", ptrBits == 32 ? "win-x86" : "win-x64", "native", "libzstd.dll");
+      }
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+        LibPath = Path.Combine(baseDir, "libzstd.dylib");
+        if (!TryLoad(LibPath, out lib))
+          LibPath = Path.Combine(baseDir, "runtimes", "osx-x64", "native", "libzstd.dylib");
+      }
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+        LibPath = Path.Combine(baseDir, "libzstd.so");
+        if (!TryLoad(LibPath, out lib))
+          LibPath = Path.Combine(baseDir, "runtimes", $"{(IsMusl() ? "linux-musl-" : "linux-")}{GetProcArchString()}", "native", "libzstd.so");
+      }
       else throw new PlatformNotSupportedException();
 #endif
 
-      IntPtr lib;
-      try {
-        lib = NativeLibrary.Load(LibPath);
-      }
-      catch (DllNotFoundException ex) {
+      // ReSharper disable once InvertIf
+      if (lib == default && !TryLoad(LibPath, out lib)) {
 #if !NETSTANDARD1_1
         if (File.Exists(LibPath))
-          throw new UnauthorizedAccessException(LibPath, ex);
+          throw new UnauthorizedAccessException(LibPath);
 #endif
 #if !NETFRAMEWORK
-        throw new DllNotFoundException(LibPath, ex);
+        throw new DllNotFoundException(LibPath);
 #else
         throw new FileNotFoundException(LibPath + "\n" +
           $"You may need to specify <RuntimeIdentifier>{(ptrBits == 32 ? "win-x86" : "win-x64")}<RuntimeIdentifier> or <RuntimeIdentifier>win<RuntimeIdentifier> in your project file.",
-          LibPath, ex);
+          LibPath);
 #endif
       }
 
-      if (lib == default)
-#if NETSTANDARD1_1
-        throw new InvalidOperationException($"Unable to load {LibPath}");
-#else
-        throw new InvalidProgramException($"Unable to load {LibPath}");
-#endif
-
       return lib;
     }, LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private static bool TryLoad(string libPath, out IntPtr lib) {
+      try {
+        lib = NativeLibrary.Load(libPath);
+      }
+      catch {
+        lib = default;
+        return false;
+      }
+
+      return true;
+    }
 
     public static IntPtr Lib => LazyLoadedLib.Value;
 
