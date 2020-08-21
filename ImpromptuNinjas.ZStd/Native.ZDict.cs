@@ -22,6 +22,8 @@ namespace ImpromptuNinjas.ZStd {
 
       //private static readonly IntPtr ZDICT_getDictHeaderSize = NativeLibrary.GetExport(LoadedLib, nameof(ZDICT_getDictHeaderSize));
 
+      private static readonly IntPtr ZDICT_finalizeDictionary = NativeLibrary.GetExport(Lib, nameof(ZDICT_finalizeDictionary));
+
       private static readonly IntPtr ZDICT_getDictID = NativeLibrary.GetExport(Lib, nameof(ZDICT_getDictID));
 
       private static readonly IntPtr ZDICT_getErrorName = NativeLibrary.GetExport(Lib, nameof(ZDICT_getErrorName));
@@ -37,6 +39,35 @@ namespace ImpromptuNinjas.ZStd {
       #endregion
 
       static ZDict() => Init();
+
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      private static UIntPtr Finalize(byte* dstDictBuffer, UIntPtr maxDictSize, byte* dictContent, UIntPtr dictContentSize, byte* samplesBuffer,
+          UIntPtr* samplesSizes, uint nbSamples, DictionaryParameters* parameters) {
+        Push(dstDictBuffer);
+        Push(maxDictSize);
+        Push(dictContent);
+        Push(dictContentSize);
+        Push(samplesBuffer);
+        Push(samplesSizes);
+        Push(nbSamples);
+        Push(parameters);
+        Push(ZDICT_finalizeDictionary);
+        Tail();
+        Calli(new StandAloneMethodSig(CallingConvention.Cdecl, typeof(UIntPtr),
+          typeof(byte*), typeof(UIntPtr), typeof(byte*), typeof(UIntPtr), typeof(byte*), typeof(UIntPtr*), typeof(uint), typeof(DictionaryParameters*)));
+        return Return<UIntPtr>();
+      }
+
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static UIntPtr Finalize(Span<byte> dictionary, ReadOnlySpan<byte> dictContent, ReadOnlySpan<byte> samples, ReadOnlySpan<UIntPtr> samplesSizes, ref DictionaryParameters parameters) {
+        fixed (byte* pDictBuffer = dictionary)
+        fixed (byte* pDictContent = dictContent)
+        fixed (byte* pSamplesBuffer = samples)
+        fixed (UIntPtr* pSamplesSizes = samplesSizes)
+        fixed (DictionaryParameters* pParameters = &parameters)
+          return Finalize(pDictBuffer, (UIntPtr) dictionary.Length, pDictContent,  (UIntPtr) dictContent.Length,
+            pSamplesBuffer, pSamplesSizes, (uint) samplesSizes.Length, pParameters);
+      }
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       private static UIntPtr Train(byte* dictBuffer, UIntPtr dictBufferCapacity, byte* samplesBuffer, UIntPtr* samplesSizes, uint nbSamples, DictionaryTrainingParameters* parameters) {
