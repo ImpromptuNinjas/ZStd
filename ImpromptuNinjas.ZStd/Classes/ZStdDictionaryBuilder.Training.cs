@@ -13,6 +13,18 @@ namespace ImpromptuNinjas.ZStd {
       return parameters;
     }
 
+    public void Finalize(ReadOnlySpan<byte> contents, SamplerDelegate sampler, ref DictionaryParameters parameters) {
+      var samplesBuffer = GatherSamples(sampler, out var samplesSizes);
+      Size = Native.ZDict.Finalize(
+          Data,
+          contents,
+          samplesBuffer,
+          (ReadOnlySpan<UIntPtr>) samplesSizes,
+          ref parameters
+        )
+        .EnsureZDictSuccess();
+    }
+
     public void Train(SamplerDelegate sampler, ref DictionaryTrainingParameters parameters) {
       var samplesBuffer = GatherSamples(sampler, out var samplesSizes);
 
